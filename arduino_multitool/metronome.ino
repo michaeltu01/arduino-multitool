@@ -1,0 +1,7 @@
+/*
+
+  metronome.ino
+
+  Main file for metronome mode.
+
+*/
