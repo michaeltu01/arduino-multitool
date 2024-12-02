@@ -7,7 +7,7 @@ const int buzzerLength = 50;
 const int minBPM = 40;
 const int maxBPM = 250;
 
-void setup() {
+void metronomeSetup() {
   Serial.begin(9600);
   pinMode(upButtonPin, INPUT);
   pinMode(downButtonPin, INPUT);
@@ -17,7 +17,7 @@ void setup() {
   Serial.print("Current BPM: " + String(bpm));
 }
 
-void loop() {
+void metronomeLoop() {
   digitalWrite(buzzerPin, HIGH);
   delay(buzzerLength);
   digitalWrite(buzzerPin, LOW);

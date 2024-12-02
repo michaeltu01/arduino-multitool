@@ -147,7 +147,7 @@ void notePlayingLoop() {
   // one call of loop() = one note of song played
   // player should pause for 2 seconds before resuming song
   // playNoteDuration(440, 100000);
-  tone(D4, 440);
+  tone(D6, 440);
   // counter++;
   // if(counter == songLen){
   //   counter = 0;
