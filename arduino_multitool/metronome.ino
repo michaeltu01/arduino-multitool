@@ -1,6 +1,6 @@
-const int buzzerPin = 4;
-const int upButtonPin = 2;
-const int downButtonPin = 3;
+const int buzzerPin = 13;
+const int upButtonPin = 12;
+const int downButtonPin = 11;
 
 int bpm = 60;
 const int buzzerLength = 50;
@@ -14,13 +14,14 @@ void metronomeSetup() {
   pinMode(buzzerPin, OUTPUT); //pin 4 is output
   attachInterrupt(digitalPinToInterrupt(upButtonPin), upButtonISR, RISING);
   attachInterrupt(digitalPinToInterrupt(downButtonPin), downButtonISR, RISING);
+  displayMetronome(true, bpm);
   Serial.print("Current BPM: " + String(bpm));
 }
 
 void metronomeLoop() {
-  digitalWrite(buzzerPin, HIGH);
+  tone(buzzerPin, 440);
   delay(buzzerLength);
-  digitalWrite(buzzerPin, LOW);
+  noTone(buzzerPin);
   delay(60000/bpm - buzzerLength); //buzz at a certain bpm
   Serial.println("Current BPM: " + String(bpm));
 }
@@ -29,11 +30,12 @@ void upButtonISR(){
   if(bpm + 5 <= maxBPM){
     bpm += 5;
   }
+  displayMetronome(true, bpm);
 }
 
 void downButtonISR(){
   if(bpm - 5 >= minBPM){
     bpm -= 5;
   }
+  displayMetronome(true, bpm);
 }
-
