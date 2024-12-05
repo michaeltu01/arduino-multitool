@@ -8,12 +8,17 @@
 
 
 void setup() {
-  notePlayerSetup();
   // put your setup code here, to run once:
-
+  // notePlayerSetup();
+  // metronomeSetup();
+  // tunerSetup();
+  micReceiverSetup();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  notePlayingLoop();
+  // notePlayingLoop();
+  // metronomeLoop();
+  // tunerLoop();
+  micReceiverLoop();
 }
