@@ -1,4 +1,7 @@
+#include "arduino_multitool.h"
+
 /* 
+
 
   arduino_multitool.ino
 
@@ -6,19 +9,20 @@
 
 */
 
-
 void setup() {
   // put your setup code here, to run once:
-  // notePlayerSetup();
-  // metronomeSetup();
-  // tunerSetup();
-  micReceiverSetup();
+  initializeLCD();
+
+  //notePlayerSetup();
+  
+  metronomeSetup();
+  //calibrate();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  // notePlayingLoop();
-  // metronomeLoop();
-  // tunerLoop();
-  micReceiverLoop();
+  //displayTuner(0, "A4");
+  //notePlayingLoop();
+  metronomeLoop();
+  //delay(100);
 }
