@@ -1,33 +1,43 @@
 // Enum for defining states
-enum TOOL_STATE {
-  METRONOME,
-  TUNER,
-  NOTE_PLAYER,
-  OFF_STATE
-};
+// enum TOOL_STATE {
+//   METRONOME,
+//   TUNER,
+//   NOTE_PLAYER,
+//   OFF_STATE
+// };
 
-// Enum for defining instruments
-enum INSTRUMENTS {
-  GUITAR,
-  VIOLIN,
-}
+// // Enum for defining instruments
+// enum INSTRUMENTS {
+//   GUITAR,
+//   VIOLIN,
+// }
 
-enum NOTE {
-  C3,
-  D3,
-  E3,
-  F3,
-  G3,
-  A3,
-  B3,
-  C4,
-}
+// enum NOTE {
+//   C3,
+//   D3,
+//   E3,
+//   F3,
+//   G3,
+//   A3,
+//   B3,
+//   C4,
+// }
+
+String[] notes = {'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4'};
+String[] instruments = {'GUITAR', 'VIOLIN');
+// String[] tools = {'METRONOME','TUNER','NOTE_PLAYER'};
+//'METRONOME_OFF','NOTE_PLAYER_OFF','TUNER_OFF'
+int currNote = 0; //index of the note in array
+int currInstrument = 0; //index of the instrument in array
+// int curr = 0; //index of the tool in array
+int lengthofNoteArray = sizeof(notesArray) / sizeof(notesArray[0]);
+int lengthofInstrumentArray = sizeof(instrumentsArray) / sizeof(instrumentsArray[0]);
+// int lengthofToolArray = sizeof(toolArray) / sizeof(toolArray[0]);
+
 
 // Global variables for state management
-MetronomeState currentState = IDLE;
+int currentState = 1; //curr state
 int bpm = 0;
-String[] instruments = ["GUITAR", "VIOLIN"];
-String[][] notes = [["C3", "D3", "E3", "F3", "G3"], ["C3", "D3"]]
 
 // Button state tracking
 bool downButtonPressed = false;
@@ -48,23 +58,23 @@ void checkButtons() {
   unsigned long currentTime = millis();
   
   // Reset button pressed states
-  downButtonPressed = false;
+  downButtonPressed = false; 
   upButtonPressed = false;
   onOffButtonPressed = false;
   toolChangeButtonPressed = false;
   
   // Instrument Button
-  if (digitalRead(instrumentButtonPin) == LOW) {
+  if (digitalRead(downButtonPressed) == LOW) {
     if ((currentTime - lastDebounceTime) > debounceDelay) {
-      instrumentButtonPressed = true;
+      downButtonPressed = true;
       lastDebounceTime = currentTime;
     }
   }
   
   // Note Button
-  if (digitalRead(noteButtonPin) == LOW) {
+  if (digitalRead(upButtonPressed) == LOW) {
     if ((currentTime - lastDebounceTime) > debounceDelay) {
-      noteButtonPressed = true;
+      upButtonPressed = true;
       lastDebounceTime = currentTime;
     }
   }
@@ -76,6 +86,14 @@ void checkButtons() {
       lastDebounceTime = currentTime;
     }
   }
+
+  // toolChangeButton pressed
+  if (digitalRead(toolChangeButtonPressed) == LOW) {
+    if ((currentTime - lastDebounceTime) > debounceDelay) {
+      toolChangeButtonPressed = true;
+      lastDebounceTime = currentTime;
+    }
+  }
 }
 
 void setup() {
@@ -83,71 +101,45 @@ void setup() {
   pinMode(instrumentButtonPin, INPUT);
   pinMode(noteButtonPin, INPUT);
   pinMode(onOffButtonPin, INPUT);
+  pinMode(toolChangeButtonPressed, INPUT);
+  buttonSetup();
 }
 
 
-
-void handleInstrumentButton() {
-  switch(currentTool) {
-    case NOTE_PLAYER:
-      // Change instrument
-      break;
-    case TUNER:
-      // Potentially different behavior
-      break;
-  }
+void changeCurrNoteUpward() {
+  currNote += 1;
+  currNote = currNote % (lengthofNoteArray);
+  // return notes[currNote];
 }
 
-void handleNoteButton() {
-  switch(currentTool) {
-    case NOTE_PLAYER:
-      // Change note or mode
-      break;
-    case TUNER:
-      // Potentially different behavior
-      break;
-  }
+void changeCurrNoteDownward() {
+  currNote -= 1;
+  currNote = currNote % (lengthofNoteArray);
+  // return notes[currNote];
 }
 
-void handleOnOffButton() {
-  // Toggle power or switch between tools
-  switch(currentTool) {
-    case METRONOME:
-      // Turn metronome on/off
-      break;
-    case NOTE_PLAYER:
-      // Turn note player on/off
-      break;
-    case TUNER:
-      // Turn tuner on/off
-      break;
-  }
+void changeCurrInstrumentUpward() {
+  currInstrument += 1;
+  currInstrument = currInstrument % (lengthofInstrumentArray);
+  // return instruments[currInstrument];
 }
 
-String cyclePitch() {
-  volatile pitchIdx = 0;
-  return notes[++pitchIdx]; // return the pitch at pitchIdx + increment the index
+void changeCurrInstrumentDownward() {
+  currInstrument -= 1;
+  currInstrument = currInstrument % (lengthofInstrumentArray);
+  // return instruments[currInstrument];
 }
 
-String cycleInstrument() {
-  volatile instrumentIdx = 0;
-  return notes[++instrumentIdx];  // return the instrument at instrumentIdx + increment the index
-}
+
 
 void fsm() {
   checkButtons();
 
-  switch(currentState) {
-    case OFF_STATE:
-      if (onOffButtonPressed) {  // Transition 0-1
-        currentState = PLAYING;
-        upButtonPressed = false;
-      }
-      break;
+  switch() {
     
-    case NOTE_PLAYER:
+    case 4:
       if (upButtonPressed) {  // Transition 5-5(a)
-        cyclePitch();
+        cyclePitch(); //TODO CAHNGE
         upButtonPressed = false;
       }
       if (downButtonPressed) {  // Transition 5-5(b)
@@ -155,7 +147,7 @@ void fsm() {
         downButtonPressed = false;
       }
 
-    case METRONOME:
+    case 2:
       // While playing, you can adjust tempo
       if (upButtonPressed) {  // Transition 3-3(a) -- shouldn't this transition just be the upButtonISR?
         bpm = min(bpm + 5, maxBPM);
@@ -167,7 +159,7 @@ void fsm() {
       }
       break;
 
-    case TUNER:
+    case 1:
       // Dedicated tempo adjustment state (optional)
       if (upButtonPressed) {  // Transition 1-1(a)
         cyclePitch();
@@ -181,11 +173,6 @@ void fsm() {
   }
 }
 
-void setup() {
-  pinMode(upButtonPin, INPUT_PULLUP);
-  pinMode(downButtonPin, INPUT_PULLUP);
-  pinMode(buzzerPin, OUTPUT);
-}
 
 void loop() {
   fsm();

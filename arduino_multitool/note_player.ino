@@ -14,9 +14,12 @@ unsigned int getNextCPUINT(unsigned int start) {
       tryInt++;
    }
 }
+
+
 volatile int intcount;
 const int CLOCKFREQ = 3000000;
 unsigned int TIMER_INT;
+
 // TODO step 2: configure port and pin for Arduino D4
 const int OUT_PORT = 1;
 const int OUT_PIN = 06;
@@ -140,6 +143,7 @@ void gptISR() {
   R_ICU->IELSR_b[TIMER_INT].IR = 0;
   NVIC_ClearPendingIRQ((IRQn_Type) TIMER_INT);
 }
+
 
 
 void notePlayingLoop() {
