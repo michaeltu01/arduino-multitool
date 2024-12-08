@@ -1,4 +1,4 @@
-// Enum for defining states
+// // Enum for defining states
 // enum TOOL_STATE {
 //   METRONOME,
 //   TUNER,
@@ -39,62 +39,62 @@ int lengthofInstrumentArray = sizeof(instrumentsArray) / sizeof(instrumentsArray
 int currentState = 1; //curr state
 int bpm = 0;
 
-// Button state tracking
-bool downButtonPressed = false;
-bool upButtonPressed = false;
-bool onOffButtonPressed = false;
-bool toolChangeButtonPressed = false;
+// // Button state tracking
+// bool downButtonPressed = false;
+// bool upButtonPressed = false;
+// bool onOffButtonPressed = false;
+// bool toolChangeButtonPressed = false;
 
-const int instrumentButtonPin = 4;
-const int noteButtonPin = 2;
-const int onOffButtonPin = 3;
-const int toolChangeButtonPin = 5;
+// const int instrumentButtonPin = 4;
+// const int noteButtonPin = 2;
+// const int onOffButtonPin = 3;
+// const int toolChangeButtonPin = 5;
 
-// Debounce variables
-unsigned long lastDebounceTime = 0;
-unsigned long debounceDelay = 50; // 50ms debounce time
+// // Debounce variables
+// unsigned long lastDebounceTime = 0;
+// unsigned long debounceDelay = 50; // 50ms debounce time
 
-void checkButtons() {
-  unsigned long currentTime = millis();
+// void checkButtons() {
+//   unsigned long currentTime = millis();
   
-  // Reset button pressed states
-  downButtonPressed = false; 
-  upButtonPressed = false;
-  onOffButtonPressed = false;
-  toolChangeButtonPressed = false;
+//   // Reset button pressed states
+//   downButtonPressed = false; 
+//   upButtonPressed = false;
+//   onOffButtonPressed = false;
+//   toolChangeButtonPressed = false;
   
-  // Instrument Button
-  if (digitalRead(downButtonPressed) == LOW) {
-    if ((currentTime - lastDebounceTime) > debounceDelay) {
-      downButtonPressed = true;
-      lastDebounceTime = currentTime;
-    }
-  }
+//   // Instrument Button
+//   if (digitalRead(downButtonPressed) == LOW) {
+//     if ((currentTime - lastDebounceTime) > debounceDelay) {
+//       downButtonPressed = true;
+//       lastDebounceTime = currentTime;
+//     }
+//   }
   
-  // Note Button
-  if (digitalRead(upButtonPressed) == LOW) {
-    if ((currentTime - lastDebounceTime) > debounceDelay) {
-      upButtonPressed = true;
-      lastDebounceTime = currentTime;
-    }
-  }
+//   // Note Button
+//   if (digitalRead(upButtonPressed) == LOW) {
+//     if ((currentTime - lastDebounceTime) > debounceDelay) {
+//       upButtonPressed = true;
+//       lastDebounceTime = currentTime;
+//     }
+//   }
   
-  // On/Off Button
-  if (digitalRead(onOffButtonPin) == LOW) {
-    if ((currentTime - lastDebounceTime) > debounceDelay) {
-      onOffButtonPressed = true;
-      lastDebounceTime = currentTime;
-    }
-  }
+//   // On/Off Button
+//   if (digitalRead(onOffButtonPin) == LOW) {
+//     if ((currentTime - lastDebounceTime) > debounceDelay) {
+//       onOffButtonPressed = true;
+//       lastDebounceTime = currentTime;
+//     }
+//   }
 
-  // toolChangeButton pressed
-  if (digitalRead(toolChangeButtonPressed) == LOW) {
-    if ((currentTime - lastDebounceTime) > debounceDelay) {
-      toolChangeButtonPressed = true;
-      lastDebounceTime = currentTime;
-    }
-  }
-}
+//   // toolChangeButton pressed
+//   if (digitalRead(toolChangeButtonPressed) == LOW) {
+//     if ((currentTime - lastDebounceTime) > debounceDelay) {
+//       toolChangeButtonPressed = true;
+//       lastDebounceTime = currentTime;
+//     }
+//   }
+// }
 
 void setup() {
   // Set up button pins with internal pull-up resistors
@@ -132,8 +132,8 @@ void changeCurrInstrumentDownward() {
 
 
 
-void fsm() {
-  checkButtons();
+// void fsm() {
+//   checkButtons();
 
   switch() {
     
@@ -174,7 +174,7 @@ void fsm() {
 }
 
 
-void loop() {
-  fsm();
-  // Other metronome logic like beat generation would go here
-}
+// void loop() {
+//   fsm();
+//   // Other metronome logic like beat generation would go here
+// }
