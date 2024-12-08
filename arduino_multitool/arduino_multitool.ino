@@ -13,16 +13,16 @@ void setup() {
   // put your setup code here, to run once:
   initializeLCD();
 
-  //notePlayerSetup();
+  notePlayerSetup();
   
-  metronomeSetup();
+  //metronomeSetup();
   //calibrate();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   //displayTuner(0, "A4");
-  //notePlayingLoop();
-  metronomeLoop();
+  notePlayingLoop();
+  //metronomeLoop();
   //delay(100);
 }
