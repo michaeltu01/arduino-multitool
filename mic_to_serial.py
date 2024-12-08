@@ -1,110 +1,72 @@
-# Pseudocode for audio frequency analysis
-import time
+import aubio
+from aubio import pitch
+import queue
+import music21
+import pyaudio
 import numpy as np
-import sounddevice as sd
 import serial
+import serial.tools.list_ports as serial_ports
 
-print(sd.query_devices())  # Lists all available devices
-sd.default.device = 15
+# attempt to open serial port
+try:
+    arduino = serial.Serial(port='COM6', baudrate=9600, timeout=.1)
+except serial.SerialException:
+    ports = serial_ports.comports()
+    for port in ports:
+        print(f"Port: {port.device}, Description: {port.description}")
+
+# Open stream.
+# PyAudio object.
+p = pyaudio.PyAudio()
+stream = p.open(format=pyaudio.paFloat32,
+                channels=1, rate=44100, input=True,
+                input_device_index=0, frames_per_buffer=512)
+
+q = queue.Queue()  
+current_pitch = music21.pitch.Pitch()
+
+samplerate = 44100
+win_s = 512 
+hop_s = 512 
+
+tolerance = 0.8
+
+pitch_o = pitch("default",win_s,hop_s,samplerate)
+#pitch_o.set_unit("")
+pitch_o.set_tolerance(tolerance)
+
+# total number of frames read
+total_frames = 0
 
 
-# def capture_audio_frequency():
-#     # Set up audio input parameters
-#     sample_rate = 44100  # Standard sampling rate
-#     duration = 0.1  # Capture duration
+def get_current_note():
+    pitches = []
+    confidences = []
+    current_pitch = music21.pitch.Pitch()
+
+    while True:
+        data = stream.read(hop_s, exception_on_overflow=False)
+        samples = np.frombuffer(data,dtype=aubio.float_type)        
+        pitch = (pitch_o(samples)[0])
+        #pitch = int(round(pitch))
+        confidence = pitch_o.get_confidence()
+        #if confidence < 0.8: pitch = 0.
+        pitches += [pitch]
+        confidences += [confidence]
+        current='Nan'
+        if pitch>0:
+            current_pitch.frequency = float(pitch)
+            current=current_pitch.nameWithOctave
+            print(pitch,'----',current,'----',current_pitch.microtone.cents)        
+            value = serial_write_read(str(pitch) + '\n') 
+            print(f"Serial out: {value}") # printing the value
+
+def serial_write_read(x): 
+    arduino.write(bytes(x, 'utf-8')) 
+    data = arduino.readline() 
+    return data
+
+
+if __name__ == '__main__':
+    get_current_note()
     
-#     # Record audio
-#     audio_data = sd.rec(int(duration * sample_rate), 
-#                         samplerate=sample_rate, 
-#                         channels=2)
-#     sd.wait()
-
-#     left_channel = audio_data[:, 0]
-#     right_channel = audio_data[:, 1]
-
-#     # Debug prints
-#     print("Audio data shape:", audio_data.shape)
-#     print("Left channel max:", np.max(left_channel))
-#     print("Right channel max:", np.max(right_channel))
-    
-#     # Perform Fast Fourier Transform (FFT)
-#     # fft_data = np.fft.fft(audio_data)
-#     # frequencies = np.fft.fftfreq(len(audio_data), 1/sample_rate)
-#     fft_data = np.fft.fft(left_channel)
-#     frequencies = np.fft.fftfreq(len(left_channel), 1/sample_rate)
-
-#     # print("Frequencies: ", frequencies)
-    
-#     # Find dominant frequency
-#     positive_freq_mask = frequencies > 0
-#     dominant_freq = frequencies[positive_freq_mask][np.argmax(np.abs(fft_data[positive_freq_mask]))]
-    
-#     print("Dominant frequency:", dominant_freq)
-#     return dominant_freq
-
-import matplotlib.pyplot as plt
-
-def capture_audio_frequency():
-    sample_rate =  48000 
-    duration = .1
-   
-      # Record audio
-    audio_data = sd.rec(int(duration * sample_rate),
-                        samplerate=sample_rate,
-                        channels=2)
-    sd.wait()
-   
-    # Combine channels (average method)
-    combined_channel = (audio_data[:, 0] + audio_data[:, 1]) / 2
-   
-    # Remove DC offset
-    combined_channel = combined_channel - np.mean(combined_channel)
-    
-    # Perform FFT
-    window = np.hamming(len(combined_channel))
-    fft_data = np.fft.rfft(combined_channel * window)
-
-    frequencies = np.fft.rfftfreq(len(combined_channel), 1/sample_rate)
-    
-    # Get magnitude spectrum
-    magnitude = np.abs(fft_data)
-    
-    noise_threshold = np.mean(magnitude) * 2
-    significant_peaks = np.where(magnitude > noise_threshold)[0]
-    first_significant_freq = frequencies[significant_peaks[0]] if len(significant_peaks) > 0 else 0
-    
-    # # Find dominant frequency
-    # dominant_index = np.argmax(magnitude[1:]) + 1  # Skip DC component
-    # dominant_freq = frequencies[dominant_index]
-    
-    # Optional: Plot spectrum for visualization
-    plt.figure(figsize=(10, 4))
-    plt.plot(audio_data[:, 0], label="Left Channel")
-    plt.plot(audio_data[:, 1], label="Right Channel")
-    plt.title("Captured Audio Signal")
-    plt.xlabel("Sample Index")
-    plt.ylabel("Amplitude")
-    plt.legend()
-    plt.show()
-        
-    print(f"first sig Frequency: {first_significant_freq:.2f} Hz")
-    return first_significant_freq
-
-def send_frequency_to_arduino():
-    # Open serial connection
-    # arduino_port = '/dev/ttyACM0'  # Adjust based on your system
-    arduino_port = "COM6";
-    baud_rate = 9600
-    
-    with serial.Serial(arduino_port, baud_rate) as ser:
-        while True:
-            # Capture and send frequency
-            freq = capture_audio_frequency()
-            print("Sending frequency:", freq)
-            # ser.write(str(freq).encode())
-            
-            # Optional: Add delay or synchronization mechanism
-            time.sleep(0.1)
-
-if __name__ == "__main__":
-    send_frequency_to_arduino()
