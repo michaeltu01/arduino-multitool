@@ -1,5 +1,8 @@
-
 void buttonSetup() {
+  pinMode(upButtonPin, INPUT);
+  pinMode(downButtonPin, INPUT);
+  pinMode(onOffButtonPin, INPUT);
+  pinMode(toolChangeButtonPin, INPUT);
   attachInterrupt(digitalPinToInterrupt(upButtonPin), upButtonISR, RISING);
   attachInterrupt(digitalPinToInterrupt(downButtonPin), downButtonISR, RISING);
   attachInterrupt(digitalPinToInterrupt(onOffButtonPin), onOffButtonISR, RISING);

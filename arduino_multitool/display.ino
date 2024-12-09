@@ -72,12 +72,12 @@ void displayMetronome(bool playing, int bpm) {
 // (DO NOT call it every frame - the screen will flicker.)
 // playing: whether the metronome is playing or not.
 // note: the note that the player is set to (as a 2 or 3-char string)
-void displayNotePlayer(bool playing, char* note) {
+void displayNotePlayer(bool playing, String note) {
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("NOTE PLAYER");
 
-  size_t noteLength = strlen(note);
+  size_t noteLength = note.length();
   int notePos = 16 - noteLength;
   lcd.setCursor(notePos,0);
   lcd.print(note);
@@ -96,7 +96,7 @@ void displayNotePlayer(bool playing, char* note) {
 // note: the note that the tuner is set to (as a two-char string)
 // accuracy: a number between 0 and 15 determining how accurate the 
 //       heard note is, where 7 and 8 is most accurate
-void displayTuner(bool displayAccuracy, int accuracy, char* note) {
+void displayTuner(bool displayAccuracy, int accuracy, String note) {
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("TUNER");
@@ -119,7 +119,7 @@ void displayTuner(bool displayAccuracy, int accuracy, char* note) {
 // 
 // instrument: string of the current instrument
 // notesList: array of strings that the current instrument tunes for (can render up to )
-void displayTunerInstrument(char* instrument, char* notesList[]) {
+void displayTunerInstrument(String instrument, const String notesList[]) {
   int totalNotesLen = 0;
   int potentialNotesLen = 0;
   int numNotesDisplayed = 0; 
@@ -142,7 +142,7 @@ void displayTunerInstrument(char* instrument, char* notesList[]) {
   // ok, note listing handling time
   int numCharsPrinted = totalNotesLen + (numNotesDisplayed - 1);
 
-  int printStart = 8 - (numCharsPrinted / 2) - (num CharsPrinted % 2);
+  int printStart = 8 - (numCharsPrinted / 2) - (numCharsPrinted % 2);
   // n.b. c int division truncates towards zero
   // so we have to nudge it a little further sometimes
 

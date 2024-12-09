@@ -27,6 +27,6 @@ void calibrate();
 
 
 // Display functions
-void displayNotePlayer(bool playing, char* note);
-void displayTuner(int accuracy, char* note);
+void displayNotePlayer(bool playing, String note);
+void displayTuner(int accuracy, String note);
 void displayMetronome(bool playing, int bpm);

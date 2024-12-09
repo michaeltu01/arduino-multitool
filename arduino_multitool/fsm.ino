@@ -1,21 +1,3 @@
-
-// Global variables for state management
-int currState = 1; //curr state
-bool toolChangeButtonPressed = false;
-bool onOffButtonPressed = false;
-
-// Metronome vars
-int bpm = 0;
-
-// Tuner vars
-char[][] notes = {'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4'};
-char[][] instruments = {'GUITAR', 'VIOLIN'};
-int currNote = 0; //index of the note in array
-int currInstrument = 0; //index of the instrument in array
-int lengthofNoteArray = sizeof(notesArray) / sizeof(notesArray[0]);
-int lengthofInstrumentArray = sizeof(instrumentsArray) / sizeof(instrumentsArray[0]);
-
-
 //0 is instrument changing for tuner state
 //1 is tuner state 
 //2 is metronome on state

@@ -1,11 +1,11 @@
 // Define the Note struct
 struct Note {
-    char name[4]; // Allow space for note name and null terminator (e.g., "C4", "C#4")
+    String name; // Allow space for note name and null terminator (e.g., "C4", "C#4")
     float freq;   // Frequency of the note
 };
 
 // Array of Note structs for all notes between octaves 3 and 5
-struct Note notes[] = {
+struct Note allNotes[] = {
     {"C3", 130.81}, {"C#3", 138.59}, {"D3", 146.83}, {"D#3", 155.56},
     {"E3", 164.81}, {"F3", 174.61},  {"F#3", 185.00}, {"G3", 196.00},
     {"G#3", 207.65}, {"A3", 220.00}, {"A#3", 233.08}, {"B3", 246.94},

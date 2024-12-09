@@ -6,12 +6,12 @@ char* noteStringArray[] = {"G", "D", "A", "E"};
 int index = 0;
 
 void notePlayerSetup() {
-  pinMode(upButtonPin, INPUT);
+  /*pinMode(upButtonPin, INPUT);
   pinMode(downButtonPin, INPUT);
   pinMode(buzzerPin, OUTPUT);
   attachInterrupt(digitalPinToInterrupt(upButtonPin), nextButtonISR, RISING);
   attachInterrupt(digitalPinToInterrupt(downButtonPin), prevButtonISR, RISING);
-  displayNotePlayer(true, noteStringArray[index]);
+  displayNotePlayer(true, noteStringArray[index]);*/
 }
 
 void notePlayingLoop() {
@@ -28,9 +28,9 @@ void nextButtonISR(){
 }
 
 void prevButtonISR(){
-  if(index == 0){
+  if (index == 0) {
     index = 3;
-  }else{
+  } else {
     index--;
   }
   displayNotePlayer(true, noteStringArray[index]);
