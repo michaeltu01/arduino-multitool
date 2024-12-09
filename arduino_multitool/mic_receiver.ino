@@ -1,5 +1,5 @@
 void micReceiverSetup() {
-  Serial.begin(9600);  // Match baud rate
+  //Serial.begin(9600);  // Match baud rate
 }
 
 void micReceiverLoop() {

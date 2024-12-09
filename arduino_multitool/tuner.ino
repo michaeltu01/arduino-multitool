@@ -9,8 +9,8 @@
 #include "tuner.h"
 
 void tunerSetup() {
-  Serial.begin(9600);
-  Serial.setTimeout(1000);
+  //Serial.begin(9600);
+  //Serial.setTimeout(1000);
 }
 
 // Get the pitch from Serial port

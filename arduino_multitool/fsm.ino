@@ -25,112 +25,139 @@ void fsm() {
   */
   switch (currState) {
     case 0: // tuner 'off', instrument change setting
+      //Serial.println("In case 0");
       if (toolChangeButtonPressed) {
+       // Serial.println("tool change button is pressed");
         toolChangeButtonPressed = false;
         interrupts();
+       // Serial.println("interrupts called");
         currState = 3;
 
         displayMetronome(false, bpm);
       } else if (onOffButtonPressed) {
+       // Serial.println("onoff button pressed");
         onOffButtonPressed = false;
         interrupts();
+       // Serial.println("interrupts called");
         currState = 1;
 
         // don't display tuner, tunerLoop currently handles
       } else {
+       // Serial.println("no buttons pressed");
         interrupts();
+       // Serial.println("interrupts called");
         // nothing to do here; just wait for an input 
         // (the inputs will call a display func directly if needed)
       }
       break;
     case 1: // tuner on, change note 'downward'
+      //Serial.println("In case 1");
       if (toolChangeButtonPressed) {
         toolChangeButtonPressed = false;
         interrupts();
+       // Serial.println("interrupts called");
         currState = 3;
 
         displayMetronome(false, bpm);
       } else if (onOffButtonPressed) {
         onOffButtonPressed = false;
         interrupts();
+       // Serial.println("interrupts called");
         currState = 0;
 
         displayTunerInstrument(instruments[currInstrument], notes);
       } else {
         interrupts();
+       // Serial.println("interrupts called");
         tunerLoop();
       }
       break;
     case 2: // metronome on
+     // Serial.println("In case 2");
       if (toolChangeButtonPressed) {
         toolChangeButtonPressed = false;
         interrupts();
+       // Serial.println("interrupts called");
         currState = 5;
 
         displayNotePlayer(false, notes[currNote]);
       } else if (onOffButtonPressed) {
         onOffButtonPressed = false;
         interrupts();
+       // Serial.println("interrupts called");
         currState = 3;
 
         displayMetronome(false, bpm);
       } else {
         interrupts();
+       // Serial.println("interrupts called");
         metronomeLoop();
       }
       break;
     case 3: // metronome off
+     // Serial.println("In case 3");
       if (toolChangeButtonPressed) {
         toolChangeButtonPressed = false;
         interrupts();
+       // Serial.println("interrupts called");
         currState = 5;
 
         displayNotePlayer(false, notes[currNote]);
       } else if (onOffButtonPressed) {
         onOffButtonPressed = false;
         interrupts();
+        //Serial.println("interrupts called");
         currState = 2;
 
         displayMetronome(true, bpm);
       } else {
         interrupts();
+        //Serial.println("interrupts called");
         // nothing to do here; just wait for an input 
         // (the inputs will call a display func directly if needed)
       }
       break;
     case 4:// note playing on
+      //Serial.println("In case 4");
       if (toolChangeButtonPressed) {
         toolChangeButtonPressed = false;
         interrupts();
+        //Serial.println("interrupts called");
         currState = 1;
 
         // don't display tuner, tunerLoop currently handles
       } else if (onOffButtonPressed) {
         onOffButtonPressed = false;
         interrupts();
+       // Serial.println("interrupts called");
         currState = 5;
 
         displayNotePlayer(false, notes[currNote]);
       } else {
         interrupts();
+       // Serial.println("interrupts called");
         notePlayingLoop();
       }
       break;
     case 5:// note playing off
+     // Serial.println("In case 5");
       if (toolChangeButtonPressed) {
         toolChangeButtonPressed = false;
         interrupts();
+      //  Serial.println("interrupts called");
         currState = 1;
 
         // don't display tuner, tunerLoop currently handles
       } else if (onOffButtonPressed) {
         onOffButtonPressed = false;
         interrupts();
+       // Serial.println("interrupts called");
         currState = 4;
 
         displayNotePlayer(true, notes[currNote]);
       } else {
         interrupts();
+      //  Serial.println("interrupts called");
         // nothing to do here; just wait for an input 
         // (the inputs will call a display func directly if needed)
       }

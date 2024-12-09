@@ -10,12 +10,12 @@
 
 const int upButtonPin = 12;
 const int downButtonPin = 11;
-const int onOffButtonPin = 8;
-const int toolChangeButtonPin = 6;
+const int onOffButtonPin = 3;
+const int toolChangeButtonPin = 2;
 
 
 // Global variables for state management
-int currState = 1; //curr state
+int currState = 2; //curr state
 bool toolChangeButtonPressed = false;
 bool onOffButtonPressed = false;
 

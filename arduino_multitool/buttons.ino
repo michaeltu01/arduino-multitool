@@ -5,29 +5,33 @@ void buttonSetup() {
   pinMode(toolChangeButtonPin, INPUT);
   attachInterrupt(digitalPinToInterrupt(upButtonPin), upButtonISR, RISING);
   attachInterrupt(digitalPinToInterrupt(downButtonPin), downButtonISR, RISING);
-  attachInterrupt(digitalPinToInterrupt(onOffButtonPin), onOffButtonISR, RISING);
-  attachInterrupt(digitalPinToInterrupt(toolChangeButtonPin), toolChangeButtonISR, RISING);
+  attachInterrupt(digitalPinToInterrupt(onOffButtonPin), onOffButtonISR,RISING);
+  attachInterrupt(digitalPinToInterrupt(toolChangeButtonPin),toolChangeButtonISR, RISING);
 }
 
 void changeCurrNoteUpward() {
+  //Serial.println("notes changed up");
   currNote += 1;
   currNote = currNote % (lengthofNoteArray);
   // return notes[currNote];
 }
 
 void changeCurrNoteDownward() {
+  //Serial.println("notes changed down");
   currNote -= 1;
   currNote = currNote % (lengthofNoteArray);
   // return notes[currNote];
 }
 
 void changeCurrInstrumentUpward() {
+ // Serial.println("instruments changed up");
   currInstrument += 1;
   currInstrument = currInstrument % (lengthofInstrumentArray);
   // return instruments[currInstrument];
 }
 
 void changeCurrInstrumentDownward() {
+  //Serial.println("instruments changed down");
   currInstrument -= 1;
   currInstrument = currInstrument % (lengthofInstrumentArray);
   // return instruments[currInstrument];
