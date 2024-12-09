@@ -1,5 +1,5 @@
 #include "arduino_multitool.h"
-
+#include "tuner.h"
 /* 
 
   arduino_multitool.ino
@@ -13,9 +13,13 @@ const int downButtonPin = 11;
 const int onOffButtonPin = 3;
 const int toolChangeButtonPin = 2;
 
+//Global variables for note player
+const int noteArray[] = {196, 293, 440, 659};
+char* noteStringArray[] = {"G", "D", "A", "E"};
+int index = 0;
 
 // Global variables for state management
-int currState = 2; //curr state
+int currState = 4; //curr state
 bool toolChangeButtonPressed = false;
 bool onOffButtonPressed = false;
 

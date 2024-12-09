@@ -10,17 +10,19 @@ void buttonSetup() {
 }
 
 void changeCurrNoteUpward() {
-  //Serial.println("notes changed up");
-  currNote += 1;
-  currNote = currNote % (lengthofNoteArray);
-  // return notes[currNote];
+  if(index >= 35){
+    index = 0;
+  }else{
+    index++;
+  }
 }
 
 void changeCurrNoteDownward() {
-  //Serial.println("notes changed down");
-  currNote -= 1;
-  currNote = currNote % (lengthofNoteArray);
-  // return notes[currNote];
+  if (index <= 0) {
+    index = 35;
+  } else {
+    index--;
+  }
 }
 
 void changeCurrInstrumentUpward() {
@@ -69,11 +71,13 @@ void upButtonISR(){
       break;
     case 4: // note playing on
       changeCurrNoteUpward();
-      displayNotePlayer(true, notes[currNote]);
+      displayNotePlayer(true, allNotes[index].name);
+      //displayNotePlayer(true, notes[currNote]);
       break;
     case 5: // note playing off
       changeCurrNoteUpward();
-      displayNotePlayer(false, notes[currNote]);
+      displayNotePlayer(true, allNotes[index].name);
+      //displayNotePlayer(false, notes[currNote]);
       break;
   }
 }
@@ -102,11 +106,13 @@ void downButtonISR(){
       break;
     case 4:// note playing on
       changeCurrNoteDownward();
-      displayNotePlayer(true, notes[currNote]);
+      displayNotePlayer(true, allNotes[index].name);
+      //displayNotePlayer(true, notes[currNote]);
       break;
     case 5:// note playing off
       changeCurrNoteDownward();
-      displayNotePlayer(false, notes[currNote]);
+      displayNotePlayer(true, allNotes[index].name);
+      //displayNotePlayer(false, notes[currNote]);
       break;
   }
 }

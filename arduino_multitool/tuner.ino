@@ -6,7 +6,6 @@
 
 */
 
-#include "tuner.h"
 
 void tunerSetup() {
   //Serial.begin(9600);
