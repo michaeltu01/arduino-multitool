@@ -2,7 +2,6 @@
 
 /* 
 
-
   arduino_multitool.ino
 
   Central file that runs the Arduino Multitool.
@@ -11,13 +10,20 @@
 
 void setup() {
   // put your setup code here, to run once:
-  // initializeLCD();
+  
+  initializeLCD();
+  //calibrate();
 
   notePlayerSetup();
-  
-  // metronomeSetup();
-  //calibrate();
+  metronomeSetup();
   tunerSetup();
+
+  // Set up button pins with internal pull-up resistors
+  pinMode(instrumentButtonPin, INPUT);
+  pinMode(noteButtonPin, INPUT);
+  pinMode(onOffButtonPin, INPUT);
+  pinMode(toolChangeButtonPressed, INPUT);
+  buttonSetup();
 }
 
 void loop() {
@@ -26,5 +32,5 @@ void loop() {
   //notePlayingLoop();
   // metronomeLoop();
   //delay(100);
-  tunerLoop();
+  fsm();
 }

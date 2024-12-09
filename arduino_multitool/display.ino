@@ -96,7 +96,7 @@ void displayNotePlayer(bool playing, char* note) {
 // note: the note that the tuner is set to (as a two-char string)
 // accuracy: a number between 0 and 15 determining how accurate the 
 //       heard note is, where 7 and 8 is most accurate
-void displayTuner(int accuracy, char* note) {
+void displayTuner(bool displayAccuracy, int accuracy, char* note) {
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("TUNER");
@@ -107,8 +107,11 @@ void displayTuner(int accuracy, char* note) {
   lcd.setCursor(7,1);
   lcd.write(byte(0)); // write the custom "goal" characters
   lcd.write(byte(1)); 
-  lcd.setCursor(accuracy, 1);
-  lcd.write(byte(255));
+
+  if (displayAccuracy) {
+    lcd.setCursor(accuracy, 1);
+    lcd.write(byte(255));
+  }
 }
 
 // When you change the instrument, you want to display what instrument
@@ -117,7 +120,6 @@ void displayTuner(int accuracy, char* note) {
 // instrument: string of the current instrument
 // notesList: array of strings that the current instrument tunes for (can render up to )
 void displayTunerInstrument(char* instrument, char* notesList[]) {
-  // we can assume that all notes are strings of the same length
   int totalNotesLen = 0;
   int potentialNotesLen = 0;
   int numNotesDisplayed = 0; 

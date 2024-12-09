@@ -13,7 +13,7 @@ void metronomeSetup() {
   // pinMode(upButtonPin, INPUT);
   // pinMode(downButtonPin, INPUT);
   pinMode(buzzerPin, OUTPUT); //pin 4 is output
-  displayMetronome(true, bpm);
+  // displayMetronome(true, bpm);
   Serial.print("Current BPM: " + String(bpm));
 }
 

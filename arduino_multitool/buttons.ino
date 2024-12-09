@@ -6,108 +6,112 @@ void buttonSetup() {
   attachInterrupt(digitalPinToInterrupt(toolChangeButtonPin), toolChangeButtonISR, RISING);
 }
 
+void changeCurrNoteUpward() {
+  currNote += 1;
+  currNote = currNote % (lengthofNoteArray);
+  // return notes[currNote];
+}
+
+void changeCurrNoteDownward() {
+  currNote -= 1;
+  currNote = currNote % (lengthofNoteArray);
+  // return notes[currNote];
+}
+
+void changeCurrInstrumentUpward() {
+  currInstrument += 1;
+  currInstrument = currInstrument % (lengthofInstrumentArray);
+  // return instruments[currInstrument];
+}
+
+void changeCurrInstrumentDownward() {
+  currInstrument -= 1;
+  currInstrument = currInstrument % (lengthofInstrumentArray);
+  // return instruments[currInstrument];
+}
+
 //tuner toggles between an instrument changing state and an actual tuning state 
+//0 is instrument changing for tuner state
 //1 is tuner state 
-//0 is instrument changing
-//2 is metronome state
+//2 is metronome on state
 //3 metronome off
-//4 is note playing state
+//4 is note playing on state
 //5 is note playing off state
 
 void upButtonISR(){
-  switch(currentState) {
+  switch (currState) {
     case 0: //tuner 'off', change instrument 'upward'
       changeCurrInstrumentUpward();
+      displayTunerInstrument(instruments[currInstrument], notes);
       break;
     case 1: //tuner on, change note 'upward'
       changeCurrNoteUpward();
+      displayTuner(false, 0, notes[currNote]);
       break;
-    case 2: //metronome on
+    case 2: // metronome on
       if(bpm + 5 <= maxBPM){
         bpm += 5;
       }
       displayMetronome(true, bpm);
       break;
-    case 3: //metronome off
-      
+    case 3: // metronome off
+      if(bpm + 5 <= maxBPM){
+        bpm += 5;
+      }
+      displayMetronome(false, bpm);
       break;
-    case 4://is note playing state
+    case 4: // note playing on
       changeCurrNoteUpward();
+      displayNotePlayer(true, notes[currNote]);
       break;
-    case 5://is note playing state off
+    case 5: // note playing off
+      changeCurrNoteUpward();
+      displayNotePlayer(false, notes[currNote]);
       break;
   }
 }
 
 void downButtonISR(){
-  switch(currentState) {
-    case 0: //tuner 'off', change instrument 'downward'
+  switch (currState) {
+    case 0: // tuner 'off', change instrument 'downward'
       changeCurrInstrumentDownward();
+      displayTunerInstrument(instruments[currInstrument], notes);
       break;
-    case 1: //tuner on, change note 'downward'
+    case 1: // tuner on, change note 'downward'
       changeCurrNoteDownward();
+      displayTuner(false, 0, notes[currNote]);
       break;
-    case 2: //metronome on
+    case 2: // metronome on
       if(bpm - 5 >= minBPM){
         bpm -= 5;
       }
       displayMetronome(true, bpm);
       break;
-    case 3: //metronome off
-      
+    case 3: // metronome off
+      if(bpm + 5 <= maxBPM){
+        bpm += 5;
+      }
+      displayMetronome(false, bpm);
       break;
-    case 4://is note playing state
+    case 4:// note playing on
       changeCurrNoteDownward();
+      displayNotePlayer(true, notes[currNote]);
       break;
-    case 5://is note playing state off
+    case 5:// note playing off
+      changeCurrNoteDownward();
+      displayNotePlayer(false, notes[currNote]);
       break;
-    
   }
 }
 
+// we only want to track whether the button has been pressed
+// the fsm handles changing state; so we only have to do this:
+
 void onOffButtonISR(){
-  // switch(currentState) {
-  //   case 0: //tuner 'off', change to tuner on
-  //     currentState = 1;
-  //     break;
-  //   case 1: //tuner on, change to off
-  //     currentState = 0;
-  //     break;
-  //   case 2: //metronome on
-  //     currentState = 3;
-  //     break;
-  //   case 3: //metronome off
-  //     currentState = 2;
-  //     break;
-  //   case 4://is note playing state
-  //     currentState = 5;
-  //     break;
-  //   case 5://is note playing state off
-  //     currentState = 4;
-  //     break;
-  // }
+  onOffButtonPressed = true;
 }
 
 void toolChangeButtonISR(){
-  // switch(currentState) {
-  //   case 0: //tuner 'off', change to NP
-  //     currentState = 5;
-  //     break;
-  //   case 1: //tuner on, change to off
-  //     currentState = 5;
-  //     break;
-  //   case 2: //metronome on change to tuner off
-  //     currentState = 0;
-  //     break;
-  //   case 3: //metronome off
-  //     currentState = 0;
-  //     break;
-  //   case 4://is note playing state change to metro
-  //     currentState = 3;
-  //     break;
-  //   case 5://is note playing state off
-  //     currentState = 3;
-  //     break;
-  // }
+  toolChangeButtonPressed = true;
 }
 
