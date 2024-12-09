@@ -9,11 +9,10 @@ const int maxBPM = 250;
 
 void metronomeSetup() {
   Serial.begin(9600);
-  pinMode(upButtonPin, INPUT);
-  pinMode(downButtonPin, INPUT);
+  //inputs are done in setup
+  // pinMode(upButtonPin, INPUT);
+  // pinMode(downButtonPin, INPUT);
   pinMode(buzzerPin, OUTPUT); //pin 4 is output
-  attachInterrupt(digitalPinToInterrupt(upButtonPin), upButtonISR, RISING);
-  attachInterrupt(digitalPinToInterrupt(downButtonPin), downButtonISR, RISING);
   displayMetronome(true, bpm);
   Serial.print("Current BPM: " + String(bpm));
 }
@@ -26,16 +25,3 @@ void metronomeLoop() {
   Serial.println("Current BPM: " + String(bpm));
 }
 
-void upButtonISR(){
-  if(bpm + 5 <= maxBPM){
-    bpm += 5;
-  }
-  displayMetronome(true, bpm);
-}
-
-void downButtonISR(){
-  if(bpm - 5 >= minBPM){
-    bpm -= 5;
-  }
-  displayMetronome(true, bpm);
-}

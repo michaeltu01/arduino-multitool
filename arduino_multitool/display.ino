@@ -71,13 +71,15 @@ void displayMetronome(bool playing, int bpm) {
 // Call it whenever the screen updates 
 // (DO NOT call it every frame - the screen will flicker.)
 // playing: whether the metronome is playing or not.
-// note: the note that the player is set to (as a two-char string)
+// note: the note that the player is set to (as a 2 or 3-char string)
 void displayNotePlayer(bool playing, char* note) {
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("NOTE PLAYER");
 
-  lcd.setCursor(14,0);
+  size_t noteLength = strlen(note);
+  int notePos = 16 - noteLength;
+  lcd.setCursor(notePos,0);
   lcd.print(note);
 
   lcd.setCursor(6,1);
@@ -94,10 +96,10 @@ void displayNotePlayer(bool playing, char* note) {
 // note: the note that the tuner is set to (as a two-char string)
 // accuracy: a number between 0 and 15 determining how accurate the 
 //       heard note is, where 7 and 8 is most accurate
-void displayTuner(int accuracy, char* instrument, char* note) {
+void displayTuner(int accuracy, char* note) {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print(instrument);
+  lcd.print("TUNER");
 
   lcd.setCursor(14,0);
   lcd.print(note);
@@ -107,4 +109,45 @@ void displayTuner(int accuracy, char* instrument, char* note) {
   lcd.write(byte(1)); 
   lcd.setCursor(accuracy, 1);
   lcd.write(byte(255));
+}
+
+// When you change the instrument, you want to display what instrument
+// is currently being rendered
+// 
+// instrument: string of the current instrument
+// notesList: array of strings that the current instrument tunes for (can render up to )
+void displayTunerInstrument(char* instrument, char* notesList[]) {
+  // we can assume that all notes are strings of the same length
+  int totalNotesLen = 0;
+  int potentialNotesLen = 0;
+  int numNotesDisplayed = 0; 
+
+  for (int i = 0; i < sizeof(notesList); i++) {
+    potentialNotesLen += sizeof(notesList[i]);
+    if ((potentialNotesLen + i) > 16) {
+      break;
+    } else {
+      totalNotesLen = potentialNotesLen;
+      numNotesDisplayed = i + 1;
+    }
+  }
+
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("SET TO: ");
+  lcd.print(instrument); // instruments should be no longer than 8 chars
+
+  // ok, note listing handling time
+  int numCharsPrinted = totalNotesLen + (numNotesDisplayed - 1);
+
+  int printStart = 8 - (numCharsPrinted / 2) - (num CharsPrinted % 2);
+  // n.b. c int division truncates towards zero
+  // so we have to nudge it a little further sometimes
+
+  lcd.setCursor(printStart,1);
+  
+  for (int j = 0; j < numNotesDisplayed; j++) {
+    lcd.print(notesList[j]);
+    lcd.print(" ");
+  }
 }
