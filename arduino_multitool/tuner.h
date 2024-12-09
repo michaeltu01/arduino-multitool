@@ -1,6 +1,6 @@
 // Define the Note struct
 struct Note {
-    String name; // Allow space for note name and null terminator (e.g., "C4", "C#4")
+    String name;  // (e.g., "C4", "C#4")
     float freq;   // Frequency of the note
 };
 
