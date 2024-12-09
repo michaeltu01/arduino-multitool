@@ -11,9 +11,12 @@ import serial.tools.list_ports as serial_ports
 try:
     arduino = serial.Serial(port='COM6', baudrate=9600, timeout=.1)
 except serial.SerialException:
+    print("Serial port not found")
+    print("Here are the available ports: ")
     ports = serial_ports.comports()
     for port in ports:
         print(f"Port: {port.device}, Description: {port.description}")
+    exit()
 
 # Open stream.
 # PyAudio object.
@@ -58,12 +61,12 @@ def get_current_note():
             current_pitch.frequency = float(pitch)
             current=current_pitch.nameWithOctave
             print(pitch,'----',current,'----',current_pitch.microtone.cents)        
-            value = serial_write_read(str(pitch) + '\n') 
+            value = serial_write_read(f"{str(pitch)},{current.replace('-', '').replace('~', '')}\n") 
             print(f"Serial out: {value}") # printing the value
 
 def serial_write_read(x): 
     arduino.write(bytes(x, 'utf-8')) 
-    data = arduino.readline() 
+    data = arduino.readline()
     return data
 
 
