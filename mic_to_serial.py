@@ -7,9 +7,11 @@ import numpy as np
 import serial
 import serial.tools.list_ports as serial_ports
 
+port = "COM18"
+
 # attempt to open serial port
 try:
-    arduino = serial.Serial(port='COM6', baudrate=9600, timeout=.1)
+    arduino = serial.Serial(port=port, baudrate=9600, timeout=.1)
 except serial.SerialException:
     print("Serial port not found")
     print("Here are the available ports: ")

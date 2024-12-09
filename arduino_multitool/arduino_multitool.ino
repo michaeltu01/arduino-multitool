@@ -17,7 +17,7 @@ const int toolChangeButtonPin = 2;
 int index = 0;
 
 // Global variables for state management
-int currState = 2; //curr state
+int currState = 1; //curr state
 bool toolChangeButtonPressed = false;
 bool onOffButtonPressed = false;
 
