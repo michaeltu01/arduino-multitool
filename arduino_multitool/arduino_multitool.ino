@@ -10,8 +10,8 @@
 
 const int upButtonPin = 12;
 const int downButtonPin = 11;
-const int onOffButtonPin = 10;
-const int toolChangeButtonPin = 9;
+const int onOffButtonPin = 8;
+const int toolChangeButtonPin = 6;
 
 
 // Global variables for state management
