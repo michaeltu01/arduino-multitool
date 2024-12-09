@@ -131,7 +131,7 @@ void fsm() {
         interrupts();
        // Serial.println("interrupts called");
         currState = 5;
-
+        noTone(buzzerPin);
         displayNotePlayer(false, notes[currNote]);
       } else {
         interrupts();
