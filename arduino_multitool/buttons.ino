@@ -89,14 +89,14 @@ void downButtonISR(){
       displayTuner(false, 0, notes[currNote]);
       break;
     case 2: // metronome on
-      if(bpm - 5 >= minBPM){
+      if (bpm - 5 >= minBPM) {
         bpm -= 5;
       }
       displayMetronome(true, bpm);
       break;
     case 3: // metronome off
-      if(bpm + 5 <= maxBPM){
-        bpm += 5;
+      if (bpm - 5 >= minBPM) {
+        bpm -= 5;
       }
       displayMetronome(false, bpm);
       break;
