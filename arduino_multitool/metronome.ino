@@ -14,5 +14,8 @@ void metronomeLoop() {
   noTone(buzzerPin);
   delay(60000/bpm - buzzerLength); //buzz at a certain bpm
   //Serial.println("Current BPM: " + String(bpm));
+
+  // Pet WDT
+  petWDT();
 }
 

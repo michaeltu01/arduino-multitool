@@ -17,6 +17,9 @@ void notePlayerSetup() {
 
 void notePlayingLoop() { 
   tone(buzzerPin, (int) allNotes[index].freq);
+
+  // Pet WDT
+  petWDT();
 }
 
 // void nextButtonISR(){

@@ -63,4 +63,7 @@ void tunerLoop() {
 
   // Display on the tuner
   displayTuner(true, acc, tunerNotes[currInstrument][currNote]);
+
+  // Pet WDT
+  // petWDT();
 }

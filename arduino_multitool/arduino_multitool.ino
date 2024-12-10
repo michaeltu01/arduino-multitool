@@ -1,5 +1,4 @@
 #include "arduino_multitool.h"
-#include "tuner.h"
 /* 
 
   arduino_multitool.ino
@@ -17,7 +16,8 @@ const int toolChangeButtonPin = 2;
 int index = 0;
 
 // Global variables for state management
-int currState = 3; //curr state
+// int currState = 3; //curr state
+fsm_state currState = METRONOME_OFF;
 bool toolChangeButtonPressed = false;
 bool onOffButtonPressed = false;
 
@@ -58,6 +58,9 @@ void setup() {
   // Initial setup
   displayMetronome(false, bpm);
 
+  // Initialize WDT
+  initWDT();
+  petWDT();
 }
 
 void loop() {
