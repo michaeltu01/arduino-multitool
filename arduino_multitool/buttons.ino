@@ -10,9 +10,9 @@ void buttonSetup() {
 }
 
 void changeCurrNoteUpward() {
-  if(index >= 35){
+  if (index >= 35) {
     index = 0;
-  }else{
+  } else {
     index++;
   }
 }
@@ -26,17 +26,20 @@ void changeCurrNoteDownward() {
 }
 
 void changeCurrInstrumentUpward() {
- // Serial.println("instruments changed up");
-  currInstrument += 1;
-  currInstrument = currInstrument % (lengthofInstrumentArray);
-  // return instruments[currInstrument];
+  // Serial.println("instruments changed up");
+  if (currInstrument < (lengthofInstrumentArray - 1)) {
+    currInstrument += 1;
+  } else {
+    currInstrument = 0;
+  }
 }
 
 void changeCurrInstrumentDownward() {
-  //Serial.println("instruments changed down");
-  currInstrument -= 1;
-  currInstrument = currInstrument % (lengthofInstrumentArray);
-  // return instruments[currInstrument];
+    if (currInstrument > 0) {
+    currInstrument -= 1;
+  } else {
+    currInstrument = (lengthofInstrumentArray - 1);
+  }
 }
 
 //tuner toggles between an instrument changing state and an actual tuning state 

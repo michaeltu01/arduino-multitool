@@ -149,7 +149,7 @@ void displayTunerInstrument(String instrument, const Note notesList[]) {
   lcd.setCursor(printStart,1);
   
   for (int j = 0; j < numNotesDisplayed; j++) {
-    lcd.print(notesList[j].name);
+    lcd.print((notesList[j]).name);
     lcd.print(" ");
   }
 }
