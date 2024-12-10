@@ -16,6 +16,6 @@ void metronomeLoop() {
   //Serial.println("Current BPM: " + String(bpm));
 
   // Pet WDT
-  petWDT();
+  // petWDT();
 }
 

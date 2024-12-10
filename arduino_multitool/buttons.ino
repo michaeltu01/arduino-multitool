@@ -73,7 +73,7 @@ void upButtonISR(){
       displayTunerInstrument(instruments[currInstrument], tunerNotes[currInstrument]);
       break;
     case TUNER_ON: //tuner on, change note 'upward'
-      changeCurrNoteUpward();
+      changeCurrTunerNoteUpward();
       displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       break;
     case METRONOME_ON: // metronome on
@@ -91,12 +91,10 @@ void upButtonISR(){
     case NOTE_PLAYER_ON: // note playing on
       changeCurrNoteUpward();
       displayNotePlayer(true, allNotes[index].name);
-      //displayNotePlayer(true, tunerNotes[currInstrument][currNote]);
       break;
     case NOTE_PLAYER_OFF: // note playing off
       changeCurrNoteUpward();
       displayNotePlayer(false, allNotes[index].name);
-      //displayNotePlayer(false, tunerNotes[currInstrument][currNote]);
       break;
   }
 }
@@ -108,7 +106,7 @@ void downButtonISR(){
       displayTunerInstrument(instruments[currInstrument], tunerNotes[currInstrument]);
       break;
     case TUNER_ON: // tuner on, change note 'downward'
-      changeCurrNoteDownward();
+      changeCurrTunerNoteDownward();
       displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       break;
     case METRONOME_ON: // metronome on
@@ -126,12 +124,10 @@ void downButtonISR(){
     case NOTE_PLAYER_ON:// note playing on
       changeCurrNoteDownward();
       displayNotePlayer(true, allNotes[index].name);
-      //displayNotePlayer(true, tunerNotes[currInstrument][currNote]);
       break;
     case NOTE_PLAYER_OFF:// note playing off
       changeCurrNoteDownward();
       displayNotePlayer(false, allNotes[index].name);
-      //displayNotePlayer(false, tunerNotes[currInstrument][currNote]);
       break;
   }
 }

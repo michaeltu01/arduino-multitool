@@ -33,36 +33,6 @@ void fsm() {
       and that's all handled via interrupts
   */
   switch (currState) {
-    case INSTRUMENT_CHANGE: // tuner 'off', instrument change setting
-      //Serial.println("In case 2");
-      if (toolChangeButtonPressed) {  // TRANSITION 2-3
-       // Serial.println("tool change button is pressed");
-        toolChangeButtonPressed = false;
-        interrupts();
-       // Serial.println("interrupts called");
-        // currState = 3;
-        currState = METRONOME_OFF;
-
-        displayMetronome(false, bpm);
-      } else if (onOffButtonPressed) {  // TRANSITION 2-1
-       // Serial.println("onoff button pressed");
-        onOffButtonPressed = false;
-        interrupts();
-       // Serial.println("interrupts called");
-        currState = TUNER_ON;
-
-        displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]); // NOTE: why is displayAccuracy important?
-      } else {  // TRANSITION 2-2
-       // Serial.println("no buttons pressed");
-        interrupts();
-       // Serial.println("interrupts called");
-        // nothing to do here; just wait for an input 
-        // (the inputs will call a display func directly if needed)
-
-        // Pet WDT
-        petWDT();
-      }
-      break;
     case TUNER_ON: // tuner on, change note 'downward'
       //Serial.println("In case 1");
       if (toolChangeButtonPressed) {   // TRANSITION 1-3; Can't switch out of the tuner state
@@ -82,7 +52,37 @@ void fsm() {
       } else {  // TRANSITION 1-1; FIXME: Changing the reference note in tuner = ON mode doesn't work
         interrupts();
        // Serial.println("interrupts called");
+        delay(100);
         tunerLoop();
+      }
+      break;
+    case INSTRUMENT_CHANGE: // tuner 'off', instrument change setting
+      //Serial.println("In case 2");
+      if (toolChangeButtonPressed) {  // TRANSITION 2-3
+       // Serial.println("tool change button is pressed");
+        toolChangeButtonPressed = false;
+        interrupts();
+       // Serial.println("interrupts called");
+        // currState = 3;
+        currState = METRONOME_OFF;
+        displayMetronome(false, bpm);
+      } else if (onOffButtonPressed) {  // TRANSITION 2-1
+       // Serial.println("onoff button pressed");
+        onOffButtonPressed = false;
+        interrupts();
+       // Serial.println("interrupts called");
+        currState = TUNER_ON;
+
+        displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]); // NOTE: why is displayAccuracy important?
+      } else {  // TRANSITION 2-2
+       // Serial.println("no buttons pressed");
+        interrupts();
+       // Serial.println("interrupts called");
+        // nothing to do here; just wait for an input 
+        // (the inputs will call a display func directly if needed)
+
+        // Pet WDT
+        // petWDT();
       }
       break;
     case METRONOME_ON: // metronome on
@@ -113,6 +113,8 @@ void fsm() {
         toolChangeButtonPressed = false;
         interrupts();
        // Serial.println("interrupts called");
+
+        Serial.println("METRONOME_OFF TO NOTE_PLAYER_OFF");
         currState = NOTE_PLAYER_OFF;
 
         displayNotePlayer(false, allNotes[index].name);
@@ -130,7 +132,7 @@ void fsm() {
         // (the inputs will call a display func directly if needed)
 
         // Pet WDT
-        petWDT();
+        // petWDT();
       }
       break;
     case NOTE_PLAYER_ON:// note playing on
@@ -162,7 +164,8 @@ void fsm() {
       if (toolChangeButtonPressed) {  // TRANSITION 6-1
         toolChangeButtonPressed = false;
         interrupts();
-      //  Serial.println("interrupts called");
+        
+        Serial.println("NOTE_PLAYER_OFF TO TUNER_ON");
         currState = TUNER_ON;
 
         displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
@@ -173,14 +176,14 @@ void fsm() {
         currState = NOTE_PLAYER_ON;
 
         displayNotePlayer(true, allNotes[index].name);
-      } else {  // TRANSITION 6-6; FIXME: When note player = OFF and then UP/DOWN button is pressed, note changes and display inexplicably changes to "ON" when it's not actually on
+      } else {  // TRANSITION 6-6
         interrupts();
         //  Serial.println("interrupts called");
         // nothing to do here; just wait for an input 
         // (the inputs will call a display func directly if needed)
 
         // Pet WDT
-        petWDT();
+        // petWDT();
       }
       break;
   }

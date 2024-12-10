@@ -59,15 +59,11 @@ void setup() {
   displayMetronome(false, bpm);
 
   // Initialize WDT
-  initWDT();
-  petWDT();
+  // initWDT();
+  // petWDT();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  //displayTuner(0, "A4");
-  //notePlayingLoop();
-  // metronomeLoop();
-  //delay(100);
   fsm();
 }

@@ -13,7 +13,7 @@ struct Note {
     float freq;   // Frequency of the note
 };
 
-
+// Representation of FSM states
 enum fsm_state {
   TUNER_ON,
   INSTRUMENT_CHANGE,  // TUNER_OFF

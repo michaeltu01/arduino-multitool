@@ -14,7 +14,7 @@ void tunerSetup() {
 
 // Get the pitch from Serial port
 void getPitch(double* freq, String* pitchName) {
-  while(!Serial.available());
+  // while(!Serial.available());
 
   // Read in the input line
   String input = Serial.readStringUntil('\n');
@@ -27,7 +27,6 @@ void getPitch(double* freq, String* pitchName) {
   // Copy to input parameters
   *freq = freqStr.toDouble();
   *pitchName = pitchStr;
-  //strcpy(pitchName, pitchStr.c_str());
 
   // Echo back the received values
   // Serial.print(freqStr);
@@ -36,8 +35,7 @@ void getPitch(double* freq, String* pitchName) {
 }
 
 int computeAccuracy(struct Note curNote, struct Note targetNote) {
-  // int acc = max(0, min(15, 7 + (int)(freqDiff / max(abs(freqDiff), 1) * 7.5)));
-  int acc = max(0, min(15, 7 + (int)((curNote.freq - targetNote.freq) / targetNote.freq) * 40));
+  int acc = max(0, min(15, round(7 + ((curNote.freq - targetNote.freq) / targetNote.freq) * 15)));
   return acc;
 }
 
@@ -45,25 +43,31 @@ void tunerLoop() {
   double freq;
   String pitchName;
 
-  // Read the pitch from Serial
-  getPitch(&freq, &pitchName);
+  if (Serial.available()) {
+    // noInterrupts();
 
-  // Create the current Note object
-  struct Note inputNote;
-  //strncpy(curNote.name, pitchName, sizeof(curNote.name) - 1);
-  inputNote.name = pitchName;
-  inputNote.freq = freq;
+    // Read the pitch from Serial
+    getPitch(&freq, &pitchName);
 
-  // Compare the current Note with the target Note
-  // struct Note targetNote = curNote;  // whatever the current Note is
-  struct Note targetNote = tunerNotes[currInstrument][currNote];
+    // Create the current Note object
+    struct Note inputNote;
+    inputNote.name = pitchName;
+    inputNote.freq = freq;
 
-  int acc = computeAccuracy(inputNote, targetNote);
-  //Serial.println(acc);
+    // Compare the current Note with the target Note
+    // struct Note targetNote = curNote;  // whatever the current Note is
+    struct Note targetNote = tunerNotes[currInstrument][currTunerNote];
 
-  // Display on the tuner
-  displayTuner(true, acc, tunerNotes[currInstrument][currNote]);
+    int acc = computeAccuracy(inputNote, targetNote);
+    // Serial.println(acc);
+
+    // Display on the tuner
+    displayTuner(true, acc, tunerNotes[currInstrument][currTunerNote]);
+
+    // Interrupts back on
+    // interrupts(); 
+  }
 
   // Pet WDT
-  petWDT();
+  // petWDT();
 }
