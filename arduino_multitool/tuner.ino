@@ -60,5 +60,5 @@ void tunerLoop() {
   // Serial.println(acc);
 
   // Display on the tuner
-  displayTuner(true, acc, allNotes[currNote].name);
+  displayTuner(true, acc, allNotes[currNote]);
 }

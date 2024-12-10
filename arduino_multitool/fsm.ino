@@ -41,7 +41,7 @@ void fsm() {
        // Serial.println("interrupts called");
         currState = 1;
 
-        displayTuner(false, 0, notes[currNote]);
+        displayTuner(false, 0, tunerNotes[currInstrument][currNote]);
       } else {
        // Serial.println("no buttons pressed");
         interrupts();
@@ -65,7 +65,7 @@ void fsm() {
        // Serial.println("interrupts called");
         currState = 0;
 
-        displayTunerInstrument(instruments[currInstrument], notes);
+        displayTunerInstrument(instruments[currInstrument], tunerNotes[currInstrument]);
       } else {
         interrupts();
        // Serial.println("interrupts called");
@@ -80,7 +80,7 @@ void fsm() {
        // Serial.println("interrupts called");
         currState = 5;
 
-        displayNotePlayer(false, notes[currNote]);
+        displayNotePlayer(false, allNotes[index].name);
       } else if (onOffButtonPressed) {
         onOffButtonPressed = false;
         interrupts();
@@ -102,7 +102,7 @@ void fsm() {
        // Serial.println("interrupts called");
         currState = 5;
 
-        displayNotePlayer(false, notes[currNote]);
+        displayNotePlayer(false, allNotes[index].name);
       } else if (onOffButtonPressed) {
         onOffButtonPressed = false;
         interrupts();
@@ -124,15 +124,17 @@ void fsm() {
         interrupts();
         //Serial.println("interrupts called");
         currState = 1;
+
         noTone(buzzerPin);
-        // don't display tuner, tunerLoop currently handles
+        displayTuner(false, 0, tunerNotes[currInstrument][currNote]);
       } else if (onOffButtonPressed) {
         onOffButtonPressed = false;
         interrupts();
        // Serial.println("interrupts called");
         currState = 5;
+        
         noTone(buzzerPin);
-        displayNotePlayer(false, notes[currNote]);
+        displayNotePlayer(false, allNotes[index].name);
       } else {
         interrupts();
        // Serial.println("interrupts called");
@@ -147,14 +149,14 @@ void fsm() {
       //  Serial.println("interrupts called");
         currState = 1;
 
-        displayTuner(false, 0, notes[currNote]);
+        displayTuner(false, 0, tunerNotes[currInstrument][currNote]);
       } else if (onOffButtonPressed) {
         onOffButtonPressed = false;
         interrupts();
        // Serial.println("interrupts called");
         currState = 4;
 
-        displayNotePlayer(true, notes[currNote]);
+        displayNotePlayer(true, allNotes[index].name);
       } else {
         interrupts();
       //  Serial.println("interrupts called");
