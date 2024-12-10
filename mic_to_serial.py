@@ -9,29 +9,23 @@ import serial.tools.list_ports as serial_ports
 
 
 def find_serial_port():
+    port_name = None
     ports = serial_ports.comports()
     for port in ports:
         if "USB" in port.description:
-            return port.device
+            port_name = port.device
     
-    return None
+    print("Port found: " + port_name)
+    return port_name
 
 # PORT = find_serial_port()
-PORT = 'COM7'
-
-# if PORT is None:
-#     print("Serial port not found")
-#     print("Here are the available ports: ")
-#     ports = serial_ports.comports()
-#     for port in ports:
-#         print(f"Port: {port.device}, Description: {port.description}")
-#     exit()
+PORT = find_serial_port()
 
 # attempt to open serial port
 try:
     arduino = serial.Serial(port=PORT, baudrate=9600, timeout=.1)
 except serial.SerialException:
-    print("Serial port not found")
+    print("Serial port cannot be configured")
     print("Here are the available ports: ")
     ports = serial_ports.comports()
     for port in ports:
