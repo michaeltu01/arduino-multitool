@@ -25,6 +25,22 @@ void changeCurrNoteDownward() {
   }
 }
 
+void changeCurrTunerNoteUpward() {
+  if (currTunerNote < (numOfNotes[currInstrument] - 1)) {
+    currTunerNote += 1;
+  } else {
+    currTunerNote = 0;
+  }
+}
+
+void changeCurrTunerNoteDownward() {
+  if (currTunerNote > 0) {
+    currTunerNote -= 1;
+  } else {
+    currTunerNote = (numOfNotes[currInstrument] - 1);
+  }
+}
+
 void changeCurrInstrumentUpward() {
   // Serial.println("instruments changed up");
   if (currInstrument < (lengthofInstrumentArray - 1)) {
@@ -58,7 +74,7 @@ void upButtonISR(){
       break;
     case 1: //tuner on, change note 'upward'
       changeCurrNoteUpward();
-      displayTuner(false, 0, tunerNotes[currInstrument][currNote]);
+      displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       break;
     case 2: // metronome on
       if(bpm + 5 <= maxBPM){
@@ -93,7 +109,7 @@ void downButtonISR(){
       break;
     case 1: // tuner on, change note 'downward'
       changeCurrNoteDownward();
-      displayTuner(false, 0, tunerNotes[currInstrument][currNote]);
+      displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       break;
     case 2: // metronome on
       if (bpm - 5 >= minBPM) {

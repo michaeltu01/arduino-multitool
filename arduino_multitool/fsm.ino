@@ -41,7 +41,7 @@ void fsm() {
        // Serial.println("interrupts called");
         currState = 1;
 
-        displayTuner(false, 0, tunerNotes[currInstrument][currNote]);
+        displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       } else {
        // Serial.println("no buttons pressed");
         interrupts();
@@ -126,7 +126,7 @@ void fsm() {
         currState = 1;
 
         noTone(buzzerPin);
-        displayTuner(false, 0, tunerNotes[currInstrument][currNote]);
+        displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       } else if (onOffButtonPressed) {
         onOffButtonPressed = false;
         interrupts();
@@ -149,7 +149,7 @@ void fsm() {
       //  Serial.println("interrupts called");
         currState = 1;
 
-        displayTuner(false, 0, tunerNotes[currInstrument][currNote]);
+        displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       } else if (onOffButtonPressed) {
         onOffButtonPressed = false;
         interrupts();

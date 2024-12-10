@@ -34,7 +34,9 @@ const struct Note tunerNotes[2][6] = {
   {{"E2", 82.41}, {"A2", 110.00}, {"D3", 146.83}, {"G3", 196.00}, {"B3", 246.94}, {"E4", 329.63}}, 
   {{"G3", 196.00}, {"D4", 293.66}, {"A4", 440.00}, {"E5", 659.26}}};
 const String instruments[2] = {"GUITAR", "VIOLIN"};
+const int numOfNotes[2] = {6, 4};
 int currNote = 0; //index of the note in array
+int currTunerNote = 0;
 int currInstrument = 0; //index of the instrument in array
 int lengthofNoteArray = 8;
 int lengthofInstrumentArray = 2;
