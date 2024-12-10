@@ -95,7 +95,7 @@ void upButtonISR(){
       break;
     case 5: // note playing off
       changeCurrNoteUpward();
-      displayNotePlayer(true, allNotes[index].name);
+      displayNotePlayer(false, allNotes[index].name);
       //displayNotePlayer(false, tunerNotes[currInstrument][currNote]);
       break;
   }
@@ -130,7 +130,7 @@ void downButtonISR(){
       break;
     case 5:// note playing off
       changeCurrNoteDownward();
-      displayNotePlayer(true, allNotes[index].name);
+      displayNotePlayer(false, allNotes[index].name);
       //displayNotePlayer(false, tunerNotes[currInstrument][currNote]);
       break;
   }

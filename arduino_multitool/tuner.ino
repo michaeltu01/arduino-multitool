@@ -59,7 +59,7 @@ void tunerLoop() {
   struct Note targetNote = tunerNotes[currInstrument][currNote];
 
   int acc = computeAccuracy(inputNote, targetNote);
-  Serial.println(acc);
+  //Serial.println(acc);
 
   // Display on the tuner
   displayTuner(true, acc, tunerNotes[currInstrument][currNote]);
