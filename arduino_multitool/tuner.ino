@@ -69,5 +69,5 @@ void tunerLoop() {
   }
 
   // Pet WDT
-  // petWDT();
+  petWDT();
 }

@@ -59,8 +59,8 @@ void setup() {
   displayMetronome(false, bpm);
 
   // Initialize WDT
-  // initWDT();
-  // petWDT();
+  initWDT();
+  petWDT();
 }
 
 void loop() {

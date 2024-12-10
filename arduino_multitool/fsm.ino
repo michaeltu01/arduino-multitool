@@ -82,7 +82,7 @@ void fsm() {
         // (the inputs will call a display func directly if needed)
 
         // Pet WDT
-        // petWDT();
+        petWDT();
       }
       break;
     case METRONOME_ON: // metronome on
@@ -132,7 +132,7 @@ void fsm() {
         // (the inputs will call a display func directly if needed)
 
         // Pet WDT
-        // petWDT();
+        petWDT();
       }
       break;
     case NOTE_PLAYER_ON:// note playing on
@@ -183,7 +183,7 @@ void fsm() {
         // (the inputs will call a display func directly if needed)
 
         // Pet WDT
-        // petWDT();
+        petWDT();
       }
       break;
   }
