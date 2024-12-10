@@ -7,11 +7,29 @@ import numpy as np
 import serial
 import serial.tools.list_ports as serial_ports
 
-port = "COM18"
+
+def find_serial_port():
+    ports = serial_ports.comports()
+    for port in ports:
+        if "USB" in port.description:
+            return port.device
+    
+    return None
+
+# PORT = find_serial_port()
+PORT = 'COM7'
+
+# if PORT is None:
+#     print("Serial port not found")
+#     print("Here are the available ports: ")
+#     ports = serial_ports.comports()
+#     for port in ports:
+#         print(f"Port: {port.device}, Description: {port.description}")
+#     exit()
 
 # attempt to open serial port
 try:
-    arduino = serial.Serial(port=port, baudrate=9600, timeout=.1)
+    arduino = serial.Serial(port=PORT, baudrate=9600, timeout=.1)
 except serial.SerialException:
     print("Serial port not found")
     print("Here are the available ports: ")

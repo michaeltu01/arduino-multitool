@@ -17,7 +17,7 @@ const int toolChangeButtonPin = 2;
 int index = 0;
 
 // Global variables for state management
-int currState = 2; //curr state
+int currState = 3; //curr state
 bool toolChangeButtonPressed = false;
 bool onOffButtonPressed = false;
 
@@ -35,7 +35,7 @@ const struct Note tunerNotes[2][6] = {
   {{"G3", 196.00}, {"D4", 293.66}, {"A4", 440.00}, {"E5", 659.26}}};
 const String instruments[2] = {"GUITAR", "VIOLIN"};
 int currNote = 0; //index of the note in array
-int currInstrument = 0; //index of the instrument in arrayg3
+int currInstrument = 0; //index of the instrument in array
 int lengthofNoteArray = 8;
 int lengthofInstrumentArray = 2;
 
@@ -52,6 +52,10 @@ void setup() {
 
   // Set up button pins with internal pull-up resistors
   buttonSetup();
+
+  // Initial setup
+  displayMetronome(false, bpm);
+
 }
 
 void loop() {

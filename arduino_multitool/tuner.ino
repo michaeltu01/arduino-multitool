@@ -8,8 +8,8 @@
 
 
 void tunerSetup() {
-  //Serial.begin(9600);
-  //Serial.setTimeout(1000);
+  Serial.begin(9600);
+  Serial.setTimeout(1000);
 }
 
 // Get the pitch from Serial port
@@ -32,12 +32,12 @@ void getPitch(double* freq, String* pitchName) {
   // Echo back the received values
   // Serial.print(freqStr);
   // Serial.print(",");
-  // Serial.println(pitchName);
+  // Serial.println(*pitchName);
 }
 
 int computeAccuracy(struct Note curNote, struct Note targetNote) {
-  float freqDiff = curNote.freq - targetNote.freq;
-  int acc = max(0, min(15, 7 + (int)(freqDiff / max(abs(freqDiff), 1) * 7.5)));
+  // int acc = max(0, min(15, 7 + (int)(freqDiff / max(abs(freqDiff), 1) * 7.5)));
+  int acc = max(0, min(15, 7 + (int)((curNote.freq - targetNote.freq) / targetNote.freq) * 40));
   return acc;
 }
 
@@ -49,16 +49,18 @@ void tunerLoop() {
   getPitch(&freq, &pitchName);
 
   // Create the current Note object
-  struct Note curNote;
+  struct Note inputNote;
   //strncpy(curNote.name, pitchName, sizeof(curNote.name) - 1);
-  curNote.name = pitchName;
-  curNote.freq = freq;
+  inputNote.name = pitchName;
+  inputNote.freq = freq;
 
   // Compare the current Note with the target Note
-  struct Note targetNote = curNote;  // whatever the current Note is
-  int acc = computeAccuracy(curNote, targetNote);
-  // Serial.println(acc);
+  // struct Note targetNote = curNote;  // whatever the current Note is
+  struct Note targetNote = tunerNotes[currInstrument][currNote];
+
+  int acc = computeAccuracy(inputNote, targetNote);
+  Serial.println(acc);
 
   // Display on the tuner
-  displayTuner(true, acc, allNotes[currNote]);
+  displayTuner(true, acc, tunerNotes[currInstrument][currNote]);
 }
