@@ -7,6 +7,7 @@
 
 */
 
+//pins to use for the four control buttons. Pin 2 and 3 MUST be used. 
 const int upButtonPin = 12;
 const int downButtonPin = 11;
 const int onOffButtonPin = 3;
@@ -16,7 +17,6 @@ const int toolChangeButtonPin = 2;
 int index = 0;
 
 // Global variables for state management
-// int currState = 3; //curr state
 fsm_state currState = METRONOME_OFF;
 bool toolChangeButtonPressed = false;
 bool onOffButtonPressed = false;
@@ -46,7 +46,6 @@ void setup() {
   // put your setup code here, to run once:
   
   initializeLCD();
-  //calibrate();
 
   notePlayerSetup();
   metronomeSetup();
@@ -54,6 +53,9 @@ void setup() {
 
   // Set up button pins with internal pull-up resistors
   buttonSetup();
+
+  //Intialize buzzer pin to OUT
+  pinMode(buzzerPin, OUTPUT); 
 
   // Initial setup
   displayMetronome(false, bpm);

@@ -9,6 +9,7 @@ void buttonSetup() {
   attachInterrupt(digitalPinToInterrupt(toolChangeButtonPin),toolChangeButtonISR, RISING);
 }
 
+//Increase the index of allNotes that noteplayer is using. If at the end of list, loop to the beginning. 
 void changeCurrNoteUpward() {
   if (index >= 35) {
     index = 0;
@@ -17,6 +18,7 @@ void changeCurrNoteUpward() {
   }
 }
 
+//Decrease the index of allNotes that noteplayer is using. If at the beginning of list, loop to the end
 void changeCurrNoteDownward() {
   if (index <= 0) {
     index = 35;
@@ -77,6 +79,7 @@ void upButtonISR(){
       displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       break;
     case METRONOME_ON: // metronome on
+      //Increase bpm by 5 until it reaches maxBPM.
       if(bpm + 5 <= maxBPM){
         bpm += 5;
       }
@@ -110,6 +113,7 @@ void downButtonISR(){
       displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       break;
     case METRONOME_ON: // metronome on
+    //Decrease bpm by 5 until it reaches minBPM.
       if (bpm - 5 >= minBPM) {
         bpm -= 5;
       }
