@@ -64,7 +64,7 @@ void setup() {
   initWDT();
   petWDT();
   test_fsm();
-  
+  all_tests();
 }
 
 void loop() {

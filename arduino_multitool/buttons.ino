@@ -11,7 +11,7 @@ void buttonSetup() {
 
 //Increase the index of allNotes that noteplayer is using. If at the end of list, loop to the beginning. 
 void changeCurrNoteUpward() {
-  if (currNote >= 35) {
+  if (currNote >= 35 || currNote < 0) {
     currNote = 0;
   } else {
     currNote++;
@@ -20,10 +20,38 @@ void changeCurrNoteUpward() {
 
 //Decrease the index of allNotes that noteplayer is using. If at the beginning of list, loop to the end
 void changeCurrNoteDownward() {
-  if (currNote <= 0) {
+  if (currNote <= 0 || currNote > 35) {
     currNote = 35;
   } else {
     currNote--;
+  }
+}
+
+//Increase bpm by 5 until it reaches maxBPM.
+void changeBPMUpward(){
+  //out of bounds check
+  if(bpm < minBPM){
+    bpm = minBPM;
+  }else if (bpm > maxBPM){
+    bpm = maxBPM;
+  }
+
+  if(bpm + 5 <= maxBPM){
+      bpm += 5;
+  }
+}
+
+//Decrease bpm by 5 until it reaches minBPM
+void changeBPMDownward(){
+  //out of bounds check
+  if(bpm < minBPM){
+    bpm = minBPM;
+  }else if (bpm > maxBPM){
+    bpm = maxBPM;
+  }
+
+  if(bpm - 5 >= minBPM){
+      bpm -= 5;
   }
 }
 
@@ -44,7 +72,6 @@ void changeCurrTunerNoteDownward() {
 }
 
 void changeCurrInstrumentUpward() {
-  // Serial.println("instruments changed up");
   if (currInstrument < (lengthofInstrumentArray - 1)) {
     currInstrument += 1;
   } else {
@@ -79,16 +106,11 @@ void upButtonISR(){
       displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       break;
     case METRONOME_ON: // metronome on
-      //Increase bpm by 5 until it reaches maxBPM.
-      if(bpm + 5 <= maxBPM){
-        bpm += 5;
-      }
+      changeBPMUpward();
       displayMetronome(true, bpm);
       break;
     case METRONOME_OFF: // metronome off
-      if(bpm + 5 <= maxBPM){
-        bpm += 5;
-      }
+      changeBPMDownward();
       displayMetronome(false, bpm);
       break;
     case NOTE_PLAYER_ON: // note playing on
