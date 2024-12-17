@@ -96,15 +96,13 @@ void displayNotePlayer(bool playing, String note) {
 // note: the note that the tuner is set to (as a two-char string)
 // accuracy: a number between 0 and 15 determining how accurate the 
 //       heard note is, where 7 and 8 is most accurate
-void displayTuner(bool displayAccuracy, int accuracy, String inputName, Note note) {
+void displayTuner(bool displayAccuracy, int accuracy, Note note) {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("TUNER (");
-  lcd.print(note.name);
-  lcd.print(")");
+  lcd.print("TUNER");
 
-  lcd.setCursor(13,0);
-  lcd.print(inputName);
+  lcd.setCursor(14,0);
+  lcd.print(note.name);
 
   lcd.setCursor(7,1);
   lcd.write(byte(0)); // write the custom "goal" characters

@@ -62,12 +62,12 @@ void tunerLoop() {
     // Serial.println(acc);
 
     // Display on the tuner
-    displayTuner(true, acc, pitchName, tunerNotes[currInstrument][currTunerNote]);
+    displayTuner(true, acc, tunerNotes[currInstrument][currTunerNote]);
 
     // Interrupts back on
     // interrupts(); 
   }
 
   // Pet WDT
-  petWDT();
+  // petWDT();
 }
