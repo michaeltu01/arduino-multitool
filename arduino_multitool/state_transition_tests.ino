@@ -1,3 +1,5 @@
+#include "arduino_multitool.h" // Replace with the actual header file name
+
 
 /*
  * A struct to keep state inputs
@@ -7,7 +9,7 @@ typedef struct {
   bool mock_upButtonPressed;
   bool mock_downButtonPressed;
 
-} state_inputs
+} state_inputs;
 
 /*
  * A struct to keep all 9 state variables in one place
@@ -21,6 +23,7 @@ typedef struct {
   bool test_onOffButtonPressed;
 } state_vars;
 
+bool testTransition(fsm_state startState, fsm_state endState, state_inputs testStateInputs, state_vars startStateVars, state_vars endStateVars, bool verbos);
 /*
  * Given a start state, inputs, and starting values for state variables, tests that
  * updateFSM returns the correct end state and updates the state variables correctly
@@ -28,15 +31,15 @@ typedef struct {
  */
 
 bool testTransition(fsm_state startState, fsm_state endState, state_inputs testStateInputs, state_vars startStateVars, state_vars endStateVars, bool verbos) {
-  test_bpm = startStateVars.bpm
-  test_currNote = startStateVars.currNote
-  test_currTunerNote = startStateVars.currTunerNote
-  test_currInstrument = startStateVars.currInstrument
+  test_bpm = startStateVars.bpm;
+  test_currNote = startStateVars.currNote;
+  test_currTunerNote = startStateVars.currTunerNote;
+  test_currInstrument = startStateVars.currInstrument;
   // test_instruments = startStateVars.instruments these should remain as their global variables
   // test_allNotes = startStateVars.allNotes
   // test_tunerNotes = startStateVars.tunerNotes
-  test_toolButtonPressed = startStateVars.toolChangeButtonPressed
-  test_onOffButtonPressed = startStateVars.onOffButtonPressed
+  test_toolButtonPressed = startStateVars.toolChangeButtonPressed;
+  test_onOffButtonPressed = startStateVars.onOffButtonPressed;
   fsm_state resultState = test_fsm(startState, )
   bool passedTest = (endState == resultState and 
                     test_bpm == endStateVars.bpm and
@@ -44,7 +47,7 @@ bool testTransition(fsm_state startState, fsm_state endState, state_inputs testS
                     test_currTunerNote = endStateVars.currTunerNote
                     test_currInstrument = endStateVars.currInstrument
                     test_toolButtonPressed = endStateVars.toolChangeButtonPressed
-                    test_onOffButtonPressed = endStateVars.onOffButtonPressed)
+                    test_onOffButtonPressed = endStateVars.onOffButtonPressed);
 
   if (! verbos) {
     return passedTest;
@@ -81,25 +84,30 @@ bool testTransition(fsm_state startState, fsm_state endState, state_inputs testS
 
 
 
-const state testStatesIn[3] = {
-  (state) 3, (state) 6, (state) 1
-};
+// const state testStatesIn[3] = {
+//   (state) 3, (state) 6, (state) 1
+// };
 
-const state testStatesOut[3] = {
-  (state) 3, (state) 6, (state) 1 // No change due to invalid input
-};
+// const state testStatesOut[3] = {
+//   (state) 3, (state) 6, (state) 1 // No change due to invalid input
+// };
 
-const state_inputs testInputs[3] = {
-}
+// const state_inputs testInputs[3] = {
+// }
 
-const state_vars testVarsIn[3] = {
+// const state_vars testVarsIn[3] = {
 
-}
+// }
 
-const state_vars testVarsOut[3] = {
-}
+// const state_vars testVarsOut[3] = {
+// }
 
-const int numTests = 3;
+// const int numTests = 3;
+
+
+
+
+
 // void test_tuner_on_transitions() {
 //     //transition 2-3
 //     // artificially set variables

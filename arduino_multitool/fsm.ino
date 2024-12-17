@@ -163,7 +163,7 @@ void fsm() {
 
 
 
-void mock_fsm() {
+void mock_fsm(fsm_state startState) {
   // To avoid race conditions w/ state switching, pause interrupts:
   noInterrupts();
 
@@ -180,20 +180,20 @@ void mock_fsm() {
     - off states don't have any code to be run
       and that's all handled via interrupts
   */
-  switch (currState) {
+  switch (startState) {
     case TUNER_ON: // tuner on, change note 'downward'
-      if (toolChangeButtonPressed) {   // TRANSITION 1-3; Can't switch out of the tuner state
-        toolChangeButtonPressed = false;
+      if (test_toolButtonPressed) {   // TRANSITION 1-3; Can't switch out of the tuner state
+        test_toolButtonPressed = false;
         interrupts();
-        currState = METRONOME_OFF;
+        endState = METRONOME_OFF;
 
-        displayMetronome(false, bpm);
-      } else if (onOffButtonPressed) {  // TRANSITION 1-2; FIXME: Screen doesn't change to displayTunerInstrument() until note is read in after pressing ON/OFF button
-        onOffButtonPressed = false;
+        displayMetronome(false, test_bpm);
+      } else if (test_onOffButtonPressed) {  // TRANSITION 1-2; FIXME: Screen doesn't change to displayTunerInstrument() until note is read in after pressing ON/OFF button
+        test_onOffButtonPressed = false;
         interrupts();
-        currState = INSTRUMENT_CHANGE;
+        endState = INSTRUMENT_CHANGE;
 
-        displayTunerInstrument(instruments[currInstrument], tunerNotes[currInstrument]);
+        displayTunerInstrument(instruments[test_currInstrument], tunerNotes[test_currInstrument]);
       } else {  // TRANSITION 1-1; FIXME: Changing the reference note in tuner = ON mode doesn't work
         interrupts();
         delay(100);
@@ -201,18 +201,18 @@ void mock_fsm() {
       }
       break;
     case INSTRUMENT_CHANGE: // tuner 'off', instrument change setting
-      if (toolChangeButtonPressed) {  // TRANSITION 2-3
-        toolChangeButtonPressed = false;
+      if (test_toolButtonPressed) {  // TRANSITION 2-3
+        test_toolButtonPressed = false;
         interrupts();
         // currState = 3;
-        currState = METRONOME_OFF;
-        displayMetronome(false, bpm);
-      } else if (onOffButtonPressed) {  // TRANSITION 2-1
-        onOffButtonPressed = false;
+        endState = METRONOME_OFF;
+        displayMetronome(false, test_bpm);
+      } else if (test_onOffButtonPressed) {  // TRANSITION 2-1
+        test_onOffButtonPressed = false;
         interrupts();
-        currState = TUNER_ON;
+        endState = TUNER_ON;
 
-        displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]); // NOTE: why is displayAccuracy important?
+        displayTuner(false, 0, tunerNotes[test_currInstrument][test_currTunerNote]); // NOTE: why is displayAccuracy important?
       } else {  // TRANSITION 2-2
         interrupts();
         // nothing to do here; just wait for an input 
@@ -223,38 +223,38 @@ void mock_fsm() {
       }
       break;
     case METRONOME_ON: // metronome on
-      if (toolChangeButtonPressed) {  // TRANSITION 3-5
-        toolChangeButtonPressed = false;
+      if (test_toolButtonPressed) {  // TRANSITION 3-5
+        test_toolButtonPressed = false;
         interrupts();
-        currState = NOTE_PLAYER_OFF;
+        endState = NOTE_PLAYER_OFF;
 
-        displayNotePlayer(false, allNotes[currNote].name);
-      } else if (onOffButtonPressed) {  // TRANSITION 3-4
-        onOffButtonPressed = false;
+        displayNotePlayer(false, allNotes[test_currNote].name);
+      } else if (test_onOffButtonPressed) {  // TRANSITION 3-4
+        test_onOffButtonPressed = false;
         interrupts();
-        currState = METRONOME_OFF;
+        endState = METRONOME_OFF;
 
-        displayMetronome(false, bpm);
+        displayMetronome(false, test_bpm);
       } else {  // TRANSITION 3-3
         interrupts();
         metronomeLoop();
       }
       break;
     case METRONOME_OFF: // metronome off
-      if (toolChangeButtonPressed) {  // TRANSITION 4-6; FIXME: sometimes takes this transition non-deterministically (hardware?)
-        toolChangeButtonPressed = false;
+      if (test_toolButtonPressed) {  // TRANSITION 4-6; FIXME: sometimes takes this transition non-deterministically (hardware?)
+        test_toolButtonPressed = false;
         interrupts();
 
         Serial.println("METRONOME_OFF TO NOTE_PLAYER_OFF");
-        currState = NOTE_PLAYER_OFF;
+        endState = NOTE_PLAYER_OFF;
 
-        displayNotePlayer(false, allNotes[currNote].name);
-      } else if (onOffButtonPressed) {  // TRANSITION 4-3
-        onOffButtonPressed = false;
+        displayNotePlayer(false, allNotes[test_currNote].name);
+      } else if (test_onOffButtonPressed) {  // TRANSITION 4-3
+        test_onOffButtonPressed = false;
         interrupts();
-        currState = METRONOME_ON;
+        endState = METRONOME_ON;
 
-        displayMetronome(true, bpm);
+        displayMetronome(true, test_bpm);
       } else {  // TRANSITION 4-4
         interrupts();
         // nothing to do here; just wait for an input 
@@ -265,22 +265,22 @@ void mock_fsm() {
       }
       break;
     case NOTE_PLAYER_ON:// note playing on
-      if (toolChangeButtonPressed) {  // TRANSITION 5-1
-        toolChangeButtonPressed = false;
+      if (test_toolButtonPressed) {  // TRANSITION 5-1
+        test_toolButtonPressed = false;
         interrupts();
 
-        currState = TUNER_ON;
+        endState = TUNER_ON;
 
         noTone(buzzerPin);
-        displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
-      } else if (onOffButtonPressed) {  // TRANSITION 5-6
-        onOffButtonPressed = false;
+        displayTuner(false, 0, tunerNotes[test_currInstrument][test_currTunerNote]);
+      } else if (test_onOffButtonPressed) {  // TRANSITION 5-6
+        test_onOffButtonPressed = false;
         interrupts();
 
-        currState = NOTE_PLAYER_OFF;
+        endState = NOTE_PLAYER_OFF;
         
         noTone(buzzerPin);
-        displayNotePlayer(false, allNotes[currNote].name);
+        displayNotePlayer(false, allNotes[test_currNote].name);
       } else {  // TRANSITION 5-5
         interrupts();
 
@@ -289,21 +289,21 @@ void mock_fsm() {
       break;
     case NOTE_PLAYER_OFF:// note playing off
 
-      if (toolChangeButtonPressed) {  // TRANSITION 6-1
-        toolChangeButtonPressed = false;
+      if (test_toolButtonPressed) {  // TRANSITION 6-1
+        test_toolButtonPressed = false;
         interrupts();
         
         Serial.println("NOTE_PLAYER_OFF TO TUNER_ON");
-        currState = TUNER_ON;
+        endState = TUNER_ON;
 
-        displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
-      } else if (onOffButtonPressed) {  // TRANSITION 6-5
-        onOffButtonPressed = false;
+        displayTuner(false, 0, tunerNotes[test_currInstrument][test_currTunerNote]);
+      } else if (test_onOffButtonPressed) {  // TRANSITION 6-5
+        test_onOffButtonPressed = false;
         interrupts();
 
-        currState = NOTE_PLAYER_ON;
+        endState = NOTE_PLAYER_ON;
 
-        displayNotePlayer(true, allNotes[currNote].name);
+        displayNotePlayer(true, allNotes[test_currNote].name);
       } else {  // TRANSITION 6-6
         interrupts();
 

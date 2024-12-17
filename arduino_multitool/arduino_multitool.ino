@@ -13,7 +13,7 @@ const int downButtonPin = 11;
 const int onOffButtonPin = 3;
 const int toolChangeButtonPin = 2;
 
-//Global variable for the index of the note in the array, for all tools
+//Global variable for the index of the note in the array, for all
 int currNote = 0;
 
 // Global variables for state management
