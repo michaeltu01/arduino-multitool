@@ -130,6 +130,7 @@ void test_fsm() { //COMMENT OUT fsm() in loop in arduino_multitool
     // Assert
     checkGlobalVariablesForTesting(NOTE_PLAYER_OFF,0, 0, 0, 100, false, false);
 
+    Serial.println("FSM Transition Tests Passed!");
 }
 
 /* 
