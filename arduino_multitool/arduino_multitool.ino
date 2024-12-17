@@ -68,8 +68,9 @@ void setup() {
   // all_tests();
 }
 
+/*
+  Function that runs repeatedly after start-up is done
+*/
 void loop() {
-
-  // put your main code here, to run repeatedly:
   fsm();
 }

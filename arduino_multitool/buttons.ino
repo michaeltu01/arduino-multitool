@@ -1,4 +1,9 @@
-//Setup all of the relevant pins for the four buttons. We use INPUT and RISING to avoid debouncing. 
+/*
+  Setup all of the relevant pins for the four buttons.
+   We use INPUT and RISING to avoid debouncing. 
+  Inputs: None
+  Output: None
+*/
 void buttonSetup() {
   pinMode(upButtonPin, INPUT);
   pinMode(downButtonPin, INPUT);
@@ -10,7 +15,13 @@ void buttonSetup() {
   attachInterrupt(digitalPinToInterrupt(toolChangeButtonPin),toolChangeButtonISR, RISING);
 }
 
-//Increment the index of allNotes that noteplayer is using. If at the end of list, loop to the beginning. 
+/*
+  Increment the index of allNotes that noteplayer is using. 
+    If at the end of list, loop to the beginning. 
+  Inputs: None
+  Output: None
+  Alters the global variable currNote
+*/
 void changeCurrNoteUpward() {
   if (currNote >= 35 || currNote < 0) {
     currNote = 0;
@@ -19,7 +30,13 @@ void changeCurrNoteUpward() {
   }
 }
 
-//Decrement the index of allNotes that noteplayer is using. If at the beginning of list, loop to the end
+/*
+  Decrement the index of allNotes that noteplayer is using. 
+    If at the beginning of list, loop to the end
+  Inputs: None
+  Output: None
+  Alters the global variable currNote
+*/
 void changeCurrNoteDownward() {
   if (currNote <= 0 || currNote > 35) {
     currNote = 35;
@@ -28,6 +45,12 @@ void changeCurrNoteDownward() {
   }
 }
 
+/*
+  Increment the current BPM by 5 unless it has hit maxBPM.
+  Inputs: None
+  Output: None
+  Alters the global variable bpm
+*/
 //Increase bpm by 5 until it reaches maxBPM.
 void changeBPMUpward(){
   //out of bounds check
@@ -42,7 +65,12 @@ void changeBPMUpward(){
   }
 }
 
-//Decrease bpm by 5 until it reaches minBPM
+/*
+  Decrement the current BPM by 5 unless it has hit minBPM.
+  Inputs: None
+  Output: None
+  Alters the global variable bpm
+*/
 void changeBPMDownward(){
   //out of bounds check
   if(bpm < minBPM){
@@ -56,7 +84,13 @@ void changeBPMDownward(){
   }
 }
 
-//Increment the index of the tuner note. If at the end of the list, wrap around to the beginning.
+/*
+  Increment the index of the tuner note. 
+    If at the end of the list, wrap around to the beginning.
+  Inputs: None
+  Output: None
+  Alters the global variable currTunerNote
+*/
 void changeCurrTunerNoteUpward() {
   if (currTunerNote < (numOfNotes[currInstrument] - 1)) {
     currTunerNote += 1;
@@ -65,7 +99,13 @@ void changeCurrTunerNoteUpward() {
   }
 }
 
-//Decrement the index of the tuner note. If at the beginning of the list, wrap around to the end.
+/*
+  Decrement the index of the tuner note. 
+    If at the beginning of the list, wrap around to the end.
+  Inputs: None
+  Output: None
+  Alters the global variable currTunerNote
+*/
 void changeCurrTunerNoteDownward() {
   if (currTunerNote > 0) {
     currTunerNote -= 1;
@@ -74,7 +114,13 @@ void changeCurrTunerNoteDownward() {
   }
 }
 
-//Increment the index of the instrument. If at the end of the list, wrap around to the beginning.
+/*
+  Increment the index of the instrument. 
+    If at the end of the list, wrap around to the beginning.
+  Inputs: None
+  Output: None
+  Alters the global variable currInstrument
+*/
 void changeCurrInstrumentUpward() {
   if (currInstrument < (lengthofInstrumentArray - 1)) {
     currInstrument += 1;
@@ -83,7 +129,13 @@ void changeCurrInstrumentUpward() {
   }
 }
 
-//Decrement the index of the instrument. If at the beginning of the list, wrap around to the end.
+/*
+  Decrement the index of the instrument. 
+    If at the beginning of the list, wrap around to the end.
+  Inputs: None
+  Output: None
+  Alters the global variable currInstrument
+*/
 void changeCurrInstrumentDownward() {
     if (currInstrument > 0) {
     currInstrument -= 1;
@@ -92,14 +144,13 @@ void changeCurrInstrumentDownward() {
   }
 }
 
-//tuner toggles between an instrument changing state and an actual tuning state 
-//0 is instrument changing for tuner state
-//1 is tuner state 
-//2 is metronome on state
-//3 metronome off
-//4 is note playing on state
-//5 is note playing off state
-
+/*
+  Function to handle behavior when the up button is pressed.
+    (This is hooked up to the ISR)
+  Inputs: None
+  Output: None
+  Depends on the state of the FSM (which is stored as a global variable)
+*/
 void upButtonISR(){
   switch (currState) {
     case INSTRUMENT_CHANGE: //tuner 'off', change instrument 'upward'
@@ -129,6 +180,13 @@ void upButtonISR(){
   }
 }
 
+/*
+  Function to handle behavior when the down button is pressed.
+    (This is hooked up to the ISR)
+  Inputs: None
+  Output: None
+  Depends on the state of the FSM (which is stored as a global variable)
+*/
 void downButtonISR(){
   switch (currState) {
     case INSTRUMENT_CHANGE: // tuner 'off', change instrument 'downward'
