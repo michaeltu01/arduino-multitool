@@ -13,8 +13,8 @@ const int downButtonPin = 11;
 const int onOffButtonPin = 3;
 const int toolChangeButtonPin = 2;
 
-//Global variables for note player
-int index = 0;
+//Global variable for the index of the note in the array, for all tools
+int currNote = 0;
 
 // Global variables for state management
 fsm_state currState = METRONOME_OFF;
@@ -35,7 +35,7 @@ const struct Note tunerNotes[2][6] = {
   {{"G3", 196.00}, {"D4", 293.66}, {"A4", 440.00}, {"E5", 659.26}}};
 const String instruments[2] = {"GUITAR", "VIOLIN"};
 const int numOfNotes[2] = {6, 4};
-int currNote = 0; //index of the note in array
+// int currNote = 0; //index of the note in array
 int currTunerNote = 0;
 int currInstrument = 0; //index of the instrument in array
 int lengthofNoteArray = 8;

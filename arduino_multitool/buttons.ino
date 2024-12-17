@@ -11,19 +11,19 @@ void buttonSetup() {
 
 //Increase the index of allNotes that noteplayer is using. If at the end of list, loop to the beginning. 
 void changeCurrNoteUpward() {
-  if (index >= 35) {
-    index = 0;
+  if (currNote >= 35) {
+    currNote = 0;
   } else {
-    index++;
+    currNote++;
   }
 }
 
 //Decrease the index of allNotes that noteplayer is using. If at the beginning of list, loop to the end
 void changeCurrNoteDownward() {
-  if (index <= 0) {
-    index = 35;
+  if (currNote <= 0) {
+    currNote = 35;
   } else {
-    index--;
+    currNote--;
   }
 }
 
@@ -93,11 +93,11 @@ void upButtonISR(){
       break;
     case NOTE_PLAYER_ON: // note playing on
       changeCurrNoteUpward();
-      displayNotePlayer(true, allNotes[index].name);
+      displayNotePlayer(true, allNotes[currNote].name);
       break;
     case NOTE_PLAYER_OFF: // note playing off
       changeCurrNoteUpward();
-      displayNotePlayer(false, allNotes[index].name);
+      displayNotePlayer(false, allNotes[currNote].name);
       break;
   }
 }
@@ -127,11 +127,11 @@ void downButtonISR(){
       break;
     case NOTE_PLAYER_ON:// note playing on
       changeCurrNoteDownward();
-      displayNotePlayer(true, allNotes[index].name);
+      displayNotePlayer(true, allNotes[currNote].name);
       break;
     case NOTE_PLAYER_OFF:// note playing off
       changeCurrNoteDownward();
-      displayNotePlayer(false, allNotes[index].name);
+      displayNotePlayer(false, allNotes[currNote].name);
       break;
   }
 }
