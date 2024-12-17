@@ -1,3 +1,4 @@
+//Setup all of the relevant pins for the four buttons. We use INPUT and RISING to avoid debouncing. 
 void buttonSetup() {
   pinMode(upButtonPin, INPUT);
   pinMode(downButtonPin, INPUT);
@@ -9,7 +10,7 @@ void buttonSetup() {
   attachInterrupt(digitalPinToInterrupt(toolChangeButtonPin),toolChangeButtonISR, RISING);
 }
 
-//Increase the index of allNotes that noteplayer is using. If at the end of list, loop to the beginning. 
+//Increment the index of allNotes that noteplayer is using. If at the end of list, loop to the beginning. 
 void changeCurrNoteUpward() {
   if (currNote >= 35 || currNote < 0) {
     currNote = 0;
@@ -18,7 +19,7 @@ void changeCurrNoteUpward() {
   }
 }
 
-//Decrease the index of allNotes that noteplayer is using. If at the beginning of list, loop to the end
+//Decrement the index of allNotes that noteplayer is using. If at the beginning of list, loop to the end
 void changeCurrNoteDownward() {
   if (currNote <= 0 || currNote > 35) {
     currNote = 35;
@@ -55,6 +56,7 @@ void changeBPMDownward(){
   }
 }
 
+//Increment the index of the tuner note. If at the end of the list, wrap around to the beginning.
 void changeCurrTunerNoteUpward() {
   if (currTunerNote < (numOfNotes[currInstrument] - 1)) {
     currTunerNote += 1;
@@ -63,6 +65,7 @@ void changeCurrTunerNoteUpward() {
   }
 }
 
+//Decrement the index of the tuner note. If at the beginning of the list, wrap around to the end.
 void changeCurrTunerNoteDownward() {
   if (currTunerNote > 0) {
     currTunerNote -= 1;
@@ -71,6 +74,7 @@ void changeCurrTunerNoteDownward() {
   }
 }
 
+//Increment the index of the instrument. If at the end of the list, wrap around to the beginning.
 void changeCurrInstrumentUpward() {
   if (currInstrument < (lengthofInstrumentArray - 1)) {
     currInstrument += 1;
@@ -79,6 +83,7 @@ void changeCurrInstrumentUpward() {
   }
 }
 
+//Decrement the index of the instrument. If at the beginning of the list, wrap around to the end.
 void changeCurrInstrumentDownward() {
     if (currInstrument > 0) {
     currInstrument -= 1;
