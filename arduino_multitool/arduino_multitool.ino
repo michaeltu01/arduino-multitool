@@ -63,8 +63,8 @@ void setup() {
   // Initialize WDT
   initWDT();
   petWDT();
-  test_tuner_transitions();
-  // testAllTests();
+  test_fsm();
+  
 }
 
 void loop() {
