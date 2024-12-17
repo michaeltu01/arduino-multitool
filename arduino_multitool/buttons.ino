@@ -9,6 +9,7 @@ void buttonSetup() {
   attachInterrupt(digitalPinToInterrupt(toolChangeButtonPin),toolChangeButtonISR, RISING);
 }
 
+//Increase the index of allNotes that noteplayer is using. If at the end of list, loop to the beginning. 
 void changeCurrNoteUpward() {
   if (index >= 35) {
     index = 0;
@@ -17,11 +18,28 @@ void changeCurrNoteUpward() {
   }
 }
 
+//Decrease the index of allNotes that noteplayer is using. If at the beginning of list, loop to the end
 void changeCurrNoteDownward() {
   if (index <= 0) {
     index = 35;
   } else {
     index--;
+  }
+}
+
+void changeCurrTunerNoteUpward() {
+  if (currTunerNote < (numOfNotes[currInstrument] - 1)) {
+    currTunerNote += 1;
+  } else {
+    currTunerNote = 0;
+  }
+}
+
+void changeCurrTunerNoteDownward() {
+  if (currTunerNote > 0) {
+    currTunerNote -= 1;
+  } else {
+    currTunerNote = (numOfNotes[currInstrument] - 1);
   }
 }
 
@@ -52,70 +70,68 @@ void changeCurrInstrumentDownward() {
 
 void upButtonISR(){
   switch (currState) {
-    case 0: //tuner 'off', change instrument 'upward'
+    case INSTRUMENT_CHANGE: //tuner 'off', change instrument 'upward'
       changeCurrInstrumentUpward();
       displayTunerInstrument(instruments[currInstrument], tunerNotes[currInstrument]);
       break;
-    case 1: //tuner on, change note 'upward'
-      changeCurrNoteUpward();
-      displayTuner(false, 0, tunerNotes[currInstrument][currNote]);
+    case TUNER_ON: //tuner on, change note 'upward'
+      changeCurrTunerNoteUpward();
+      displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       break;
-    case 2: // metronome on
+    case METRONOME_ON: // metronome on
+      //Increase bpm by 5 until it reaches maxBPM.
       if(bpm + 5 <= maxBPM){
         bpm += 5;
       }
       displayMetronome(true, bpm);
       break;
-    case 3: // metronome off
+    case METRONOME_OFF: // metronome off
       if(bpm + 5 <= maxBPM){
         bpm += 5;
       }
       displayMetronome(false, bpm);
       break;
-    case 4: // note playing on
+    case NOTE_PLAYER_ON: // note playing on
       changeCurrNoteUpward();
       displayNotePlayer(true, allNotes[index].name);
-      //displayNotePlayer(true, tunerNotes[currInstrument][currNote]);
       break;
-    case 5: // note playing off
+    case NOTE_PLAYER_OFF: // note playing off
       changeCurrNoteUpward();
-      displayNotePlayer(true, allNotes[index].name);
-      //displayNotePlayer(false, tunerNotes[currInstrument][currNote]);
+      displayNotePlayer(false, allNotes[index].name);
       break;
   }
 }
 
 void downButtonISR(){
   switch (currState) {
-    case 0: // tuner 'off', change instrument 'downward'
+    case INSTRUMENT_CHANGE: // tuner 'off', change instrument 'downward'
       changeCurrInstrumentDownward();
       displayTunerInstrument(instruments[currInstrument], tunerNotes[currInstrument]);
       break;
-    case 1: // tuner on, change note 'downward'
-      changeCurrNoteDownward();
-      displayTuner(false, 0, tunerNotes[currInstrument][currNote]);
+    case TUNER_ON: // tuner on, change note 'downward'
+      changeCurrTunerNoteDownward();
+      displayTuner(false, 0, tunerNotes[currInstrument][currTunerNote]);
       break;
-    case 2: // metronome on
+    case METRONOME_ON: // metronome on
+    //Decrease bpm by 5 until it reaches minBPM.
       if (bpm - 5 >= minBPM) {
         bpm -= 5;
       }
       displayMetronome(true, bpm);
       break;
-    case 3: // metronome off
+    case METRONOME_OFF: // metronome off
       if (bpm - 5 >= minBPM) {
         bpm -= 5;
       }
       displayMetronome(false, bpm);
       break;
-    case 4:// note playing on
+    case NOTE_PLAYER_ON:// note playing on
       changeCurrNoteDownward();
       displayNotePlayer(true, allNotes[index].name);
-      //displayNotePlayer(true, tunerNotes[currInstrument][currNote]);
       break;
-    case 5:// note playing off
+    case NOTE_PLAYER_OFF:// note playing off
       changeCurrNoteDownward();
-      displayNotePlayer(true, allNotes[index].name);
-      //displayNotePlayer(false, tunerNotes[currInstrument][currNote]);
+      displayNotePlayer(false, allNotes[index].name);
       break;
   }
 }

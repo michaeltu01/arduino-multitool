@@ -1,5 +1,4 @@
 #include "arduino_multitool.h"
-#include "tuner.h"
 /* 
 
   arduino_multitool.ino
@@ -8,6 +7,7 @@
 
 */
 
+//pins to use for the four control buttons. Pin 2 and 3 MUST be used. 
 const int upButtonPin = 12;
 const int downButtonPin = 11;
 const int onOffButtonPin = 3;
@@ -17,7 +17,7 @@ const int toolChangeButtonPin = 2;
 int index = 0;
 
 // Global variables for state management
-int currState = 2; //curr state
+fsm_state currState = METRONOME_OFF;
 bool toolChangeButtonPressed = false;
 bool onOffButtonPressed = false;
 
@@ -34,8 +34,10 @@ const struct Note tunerNotes[2][6] = {
   {{"E2", 82.41}, {"A2", 110.00}, {"D3", 146.83}, {"G3", 196.00}, {"B3", 246.94}, {"E4", 329.63}}, 
   {{"G3", 196.00}, {"D4", 293.66}, {"A4", 440.00}, {"E5", 659.26}}};
 const String instruments[2] = {"GUITAR", "VIOLIN"};
+const int numOfNotes[2] = {6, 4};
 int currNote = 0; //index of the note in array
-int currInstrument = 0; //index of the instrument in arrayg3
+int currTunerNote = 0;
+int currInstrument = 0; //index of the instrument in array
 int lengthofNoteArray = 8;
 int lengthofInstrumentArray = 2;
 
@@ -44,7 +46,6 @@ void setup() {
   // put your setup code here, to run once:
   
   initializeLCD();
-  //calibrate();
 
   notePlayerSetup();
   metronomeSetup();
@@ -52,13 +53,19 @@ void setup() {
 
   // Set up button pins with internal pull-up resistors
   buttonSetup();
+
+  //Intialize buzzer pin to OUT
+  pinMode(buzzerPin, OUTPUT); 
+
+  // Initial setup
+  displayMetronome(false, bpm);
+
+  // Initialize WDT
+  initWDT();
+  petWDT();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  //displayTuner(0, "A4");
-  //notePlayingLoop();
-  // metronomeLoop();
-  //delay(100);
   fsm();
 }

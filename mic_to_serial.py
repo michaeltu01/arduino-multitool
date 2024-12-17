@@ -1,76 +1,78 @@
 import aubio
 from aubio import pitch
-import queue
 import music21
 import pyaudio
 import numpy as np
 import serial
 import serial.tools.list_ports as serial_ports
 
-port = "COM18"
 
-# attempt to open serial port
+def find_serial_port() -> str:
+    """Find the serial port associated with the Arduino."""
+
+    for port in serial_ports.comports():
+        if "USB" in port.description:
+            return port.device
+
+    raise ValueError("No serial port found")
+
+PORT = find_serial_port()
+
+# Attempt to open serial port
 try:
-    arduino = serial.Serial(port=port, baudrate=9600, timeout=.1)
+    arduino = serial.Serial(port=PORT, baudrate=9600, timeout=.1)
 except serial.SerialException:
-    print("Serial port not found")
+    print("Serial port cannot be configured")
     print("Here are the available ports: ")
-    ports = serial_ports.comports()
-    for port in ports:
+    for port in serial_ports.comports():
         print(f"Port: {port.device}, Description: {port.description}")
     exit()
+
+# Define constants
+SAMPLE_RATE = 44100
+WIN_S = 512
+HOP_S = 512
+TOLERANCE = 0.8
 
 # Open stream.
 # PyAudio object.
 p = pyaudio.PyAudio()
 stream = p.open(format=pyaudio.paFloat32,
-                channels=1, rate=44100, input=True,
+                channels=1, rate=SAMPLE_RATE, input=True,
                 input_device_index=0, frames_per_buffer=512)
-
-q = queue.Queue()  
 current_pitch = music21.pitch.Pitch()
 
-samplerate = 44100
-win_s = 512 
-hop_s = 512 
-
-tolerance = 0.8
-
-pitch_o = pitch("default",win_s,hop_s,samplerate)
-#pitch_o.set_unit("")
-pitch_o.set_tolerance(tolerance)
+pitch_o = pitch("default",WIN_S,HOP_S,SAMPLE_RATE)
+pitch_o.set_tolerance(TOLERANCE)
 
 # total number of frames read
 total_frames = 0
 
-
-def get_current_note():
-    pitches = []
-    confidences = []
+def get_current_note() -> None:
+    """ Get the current note from the microphone. """
+    pitch_values = []
+    confidence_values = []
     current_pitch = music21.pitch.Pitch()
 
     while True:
-        data = stream.read(hop_s, exception_on_overflow=False)
-        samples = np.frombuffer(data,dtype=aubio.float_type)        
-        pitch = (pitch_o(samples)[0])
-        #pitch = int(round(pitch))
-        confidence = pitch_o.get_confidence()
-        #if confidence < 0.8: pitch = 0.
-        pitches += [pitch]
-        confidences += [confidence]
+        audio_data = stream.read(HOP_S, exception_on_overflow=False)
+        samples = np.frombuffer(audio_data,dtype=aubio.float_type)        
+        detected_pitch = (pitch_o(samples)[0])
+        pitch_confidence = pitch_o.get_confidence()
+        pitch_values.append(detected_pitch)
+        confidence_values.append(pitch_confidence)
         current='Nan'
-        if pitch>0:
-            current_pitch.frequency = float(pitch)
+        if detected_pitch>0:
+            current_pitch.frequency = float(detected_pitch)
             current=current_pitch.nameWithOctave
-            print(pitch,'----',current,'----',current_pitch.microtone.cents)        
-            value = serial_write_read(f"{str(pitch)},{current.replace('-', '').replace('~', '')}\n") 
+            print(detected_pitch,'----',current,'----',current_pitch.microtone.cents)        
+            value = serial_write_read(f"{str(detected_pitch)},{current.replace('-', '').replace('~', '')}\n") 
             print(f"Serial out: {value}") # printing the value
 
-def serial_write_read(x): 
-    arduino.write(bytes(x, 'utf-8')) 
-    data = arduino.readline()
-    return data
-
+def serial_write_read(write_to_arduino: str) -> str: 
+    arduino.write(bytes(write_to_arduino, 'utf-8')) 
+    data_from_arduino = arduino.readline()
+    return data_from_arduino
 
 if __name__ == '__main__':
     get_current_note()
