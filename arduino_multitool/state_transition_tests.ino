@@ -177,8 +177,7 @@ fsm_state mock_fsm(fsm_state startState, state_vars startStateVars) {
       if (startStateVars.test_toolButtonPressed) {  // TRANSITION 4-6; FIXME: sometimes takes this transition non-deterministically (hardware?)
         startStateVars.test_toolButtonPressed = false;
         interrupts();
-
-        Serial.println("METRONOME_OFF TO NOTE_PLAYER_OFF");
+        
         endState = NOTE_PLAYER_OFF;
 
         //displayNotePlayer(false, allNotes[test_currNote].name);
@@ -251,7 +250,26 @@ fsm_state mock_fsm(fsm_state startState, state_vars startStateVars) {
   return endState;
 }
 
+const fsm_state testStatesIn[1] = { (fsm_state) METRONOME_OFF
+};
 
+const fsm_state testStatesOut[1] = {
+  (fsm_state) NOTE_PLAYER_OFF
+};
+
+const state_inputs testInputs[1] = {
+  (state_inputs) {false, false}
+};
+
+const state_vars testVarsIn[1] = {
+  (state_vars) {0,0,0,0,true,false}
+};
+
+const state_vars testVarsOut[1] = {
+  (state_vars) {0,0,0,0,false,false}
+};
+
+const int numTests = 1;
 
 /*
  * Runs through all the test cases defined above
@@ -268,27 +286,6 @@ bool testAllTests() {
   Serial.println("All tests passed!");
   return true;
 }
-
-
-const state testStatesIn[3] = { (fsm_state) METRONOME_OFF
-};
-
-const state testStatesOut[3] = {
-  (fsm_state) NOTE_PLAYER_OFF
-};
-
-const state_inputs testInputs[3] = {
-}
-
-const state_vars testVarsIn[3] = {
-
-}
-
-const state_vars testVarsOut[3] = {
-}
-
-const int numTests = 3;
-
 
 
 

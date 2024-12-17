@@ -63,9 +63,11 @@ void setup() {
   // Initialize WDT
   initWDT();
   petWDT();
+  
+  all_tests();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  fsm();
+  //fsm();
 }
