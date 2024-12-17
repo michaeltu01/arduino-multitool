@@ -25,14 +25,15 @@ enum fsm_state {
   NOTE_PLAYER_OFF
 };
 
-typedef struct {
-  int test_bpm;
-  int test_currNote;
-  int test_currTunerNote;
-  int test_currInstrument;
-  bool test_toolButtonPressed;
-  bool test_onOffButtonPressed;
-} state_vars;
+// typedef struct {
+//   int test_bpm;
+//   int test_currNote;
+//   int test_currTunerNote;
+//   int test_currInstrument;
+//   bool test_toolButtonPressed;
+//   bool test_onOffButtonPressed;
+// } state_vars;
+
 
 /**
 
