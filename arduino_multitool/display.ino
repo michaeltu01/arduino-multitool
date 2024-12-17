@@ -2,14 +2,24 @@
 const int rs = 4, en = 5, d4 = 6, d5 = 7, d6 = 8, d7 = 9;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-// Initializes the LCD
+/*
+  Initializes the LCD.
+  Input: None
+  Output: None
+*/
 void initializeLCD() {
   lcd.createChar(0, goalLeft);
   lcd.createChar(1, goalRight);
   lcd.begin(16,2); 
 }
 
-// Displays a calibration screen for the LCD (code stolen from Lab 5)
+/*
+  Displays a calibration screen for the LCD (code stolen from Lab 5)
+  Input: None
+  Output: None
+  NOTE: this was just for Integration Testing, and is not 
+    called in the current code control flow
+*/
 void calibrate() {
   int i = 0;
   bool left = true;
@@ -41,11 +51,14 @@ void calibrate() {
   }
 }
 
-// The display function for the Metronome tool. Call it once per frame.
-// Call it whenever the screen updates 
-// (DO NOT call it every frame - the screen will flicker.)
-// playing: whether the metronome is playing or not.
-// bpm: the current BPM of the metronome
+/* The display function for the Metronome tool. Call it once per frame.
+  Call it whenever the screen updates 
+  (DO NOT call it every frame - the screen will flicker.)
+  Inputs: 
+    playing: whether the metronome is playing or not.
+    bpm: the current BPM of the metronome
+  Output: None.
+*/
 void displayMetronome(bool playing, int bpm) {
   lcd.clear();
   lcd.setCursor(0,0);
@@ -67,11 +80,16 @@ void displayMetronome(bool playing, int bpm) {
   }
 }
 
-// The display function for the Note Player tool. 
-// Call it whenever the screen updates 
-// (DO NOT call it every frame - the screen will flicker.)
-// playing: whether the metronome is playing or not.
-// note: the note that the player is set to (as a 2 or 3-char string)
+/*
+  The display function for the Note Player tool. 
+  Call it whenever the screen updates 
+  (DO NOT call it every frame - the screen will flicker.)
+
+  Inputs: 
+    playing: whether the metronome is playing or not.
+    note: the note that the player is set to (as a Note struct)
+  Output: None
+*/
 void displayNotePlayer(bool playing, String note) {
   lcd.clear();
   lcd.setCursor(0,0);
@@ -90,12 +108,18 @@ void displayNotePlayer(bool playing, String note) {
   }
 }
 
-// The display function for the Tuner tool. 
-// Call it whenever the screen updates 
-// (DO NOT call it every frame - the screen will flicker.)
-// note: the note that the tuner is set to (as a two-char string)
-// accuracy: a number between 0 and 15 determining how accurate the 
-//       heard note is, where 7 and 8 is most accurate
+/*
+  The display function for the Tuner tool. 
+  Call it whenever the screen updates 
+  (DO NOT call it every frame - the screen will flicker.)
+  Inputs:
+    displayAccuracy: a Boolean dictating whether the accuracy will be 
+      rendered (sometimes it doesn't make sense to render it)
+    accuracy: a number between 0 and 15 determining how accurate the 
+      heard note is, where 7 and 8 is most accurate
+    note: the note that the tuner is set to (as a Note struct)
+  Output: None.
+*/
 void displayTuner(bool displayAccuracy, int accuracy, Note note) {
   lcd.clear();
   lcd.setCursor(0,0);
@@ -105,20 +129,24 @@ void displayTuner(bool displayAccuracy, int accuracy, Note note) {
   lcd.print(note.name);
 
   lcd.setCursor(7,1);
-  lcd.write(byte(0)); // write the custom "goal" characters
+  lcd.write(byte(0)); write the custom "goal" characters
   lcd.write(byte(1)); 
 
-  if (displayAccuracy) {
+  if (displayAccuracy && (accuracy <= 15) && (accuracy >= 0)) {
     lcd.setCursor(accuracy, 1);
     lcd.write(byte(255));
   }
 }
 
-// When you change the instrument, you want to display what instrument
-// is currently being rendered
-// 
-// instrument: string of the current instrument
-// notesList: array of strings that the current instrument tunes for (can render up to )
+/*
+  When you change the instrument, you want to display what instrument
+  is currently being rendered
+
+  Inputs: 
+    instrument: string of the current instrument
+    notesList: array of Note structs that the current instrument tunes for
+  Output: None
+*/
 void displayTunerInstrument(String instrument, const Note notesList[]) {
   int totalNotesLen = 0;
   int potentialNotesLen = 0;
