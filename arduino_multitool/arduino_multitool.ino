@@ -63,9 +63,12 @@ void setup() {
   // Initialize WDT
   initWDT();
   petWDT();
+  test_tuner_transitions();
+  // testAllTests();
 }
 
 void loop() {
+
   // put your main code here, to run repeatedly:
-  fsm();
+  // fsm();
 }
