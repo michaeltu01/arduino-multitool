@@ -1,6 +1,11 @@
 unsigned int WDT_INT = 0;
 
-/* Get next unused CPU interrupt > start */
+/*
+   Function to get the next unused CPU interrupt and return it.
+   Inputs: 
+      start: the interrupt number to start trying from
+   Output: the lowest unused CPU interrupt
+*/
 unsigned int getNextCPUINT(unsigned int start) {
    unsigned int tryInt = start + 1;
       while (tryInt < 32) {
@@ -11,11 +16,13 @@ unsigned int getNextCPUINT(unsigned int start) {
    }
 }
 
-/* Initialize the WDT peripheral */
+/*
+   Function to initialize the WDT peripheral.
+   Inputs: None
+   Output: None
+*/
 void initWDT() {
   WDT_INT = getNextCPUINT(1);
-  // TODO step 3 (prelab Qs6.1-6.2)
-  // Remember to use a 100% refresh window, unlike the prelab!
   R_WDT->WDTCR = (R_WDT->WDTCR & ~(R_WDT_WDTCR_CKS_Msk | R_WDT_WDTCR_TOPS_Msk)) 
                     | (0b11 << R_WDT_WDTCR_RPES_Pos)
                     | (0b11 << R_WDT_WDTCR_RPSS_Pos) 
@@ -26,9 +33,6 @@ void initWDT() {
   R_DEBUG->DBGSTOPCR_b.DBGSTOP_WDT = 0;
   R_WDT->WDTSR = 0; // clear watchdog status;
 
-  // TODO step 3 (prelab Qs6.4-6.5): Make the watchdog trigger an interrupt
-  // and use the ICU to connect it to the CPU
-  // Make sure to call the correct CMSIS functions as well!
   R_WDT->WDTRCR &= (0b1 << 7);
   R_ICU->IELSR[WDT_INT] = (0x025 << R_ICU_IELSR_IELS_Pos);
 
@@ -38,14 +42,21 @@ void initWDT() {
   NVIC_EnableIRQ((IRQn_Type) WDT_INT);
 }
 
-/* pet the watchdog */
+/*
+   Function to pet the watchdog.
+   Inputs: None
+   Output: None
+*/
 void petWDT() {
-  // TODO step 3 (prelab Q6.3)
   R_WDT->WDTRR = 0x00;
   R_WDT->WDTRR = 0xFF;
 }
 
-/* ISR when WDT triggers */
+/*
+   ISR to run when the watchdog triggers. Will hang the code indefinitely.
+   Inputs: None
+   Output: None
+*/
 void wdtISR() {
   Serial.println("WOOF!!!");
   while(true);

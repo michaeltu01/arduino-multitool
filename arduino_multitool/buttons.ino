@@ -224,10 +224,20 @@ void downButtonISR(){
 // we only want to track whether the button has been pressed
 // the fsm handles changing state; so we only have to do this:
 
+/*
+  Function to handle behavior when the on/off button is pressed.
+  Inputs: None
+  Output: None
+*/
 void onOffButtonISR(){
   onOffButtonPressed = true;
 }
 
+/*
+  Function to handle behavior when the tool change button is pressed.
+  Inputs: None
+  Output: None
+*/
 void toolChangeButtonISR(){
   toolChangeButtonPressed = true;
 }
