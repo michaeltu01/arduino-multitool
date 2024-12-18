@@ -6,7 +6,15 @@
 // 5 is note playing on state
 // 6 is note playing off state
 
-
+/*
+  Function to handle the FSM! State is tracked using the global variable
+    currState (it's a global variable so that the ISR functions can view it, 
+    since ISRs can't take inputs).
+  The function will alter toolChangeButtonPressed and onOffButtonPressed after a 
+    state transition.
+  Inputs: None
+  Output: None
+*/
 void fsm() {
   // To avoid race conditions w/ state switching, pause interrupts:
   noInterrupts();

@@ -66,8 +66,6 @@ void tunerLoop() {
   String pitchName;
 
   if (Serial.available()) {
-    // noInterrupts();
-
     // Read the pitch from Serial
     getPitch(&freq, &pitchName);
 
@@ -85,11 +83,8 @@ void tunerLoop() {
 
     // Display on the tuner
     displayTuner(true, acc, tunerNotes[currInstrument][currTunerNote]);
-
-    // Interrupts back on
-    // interrupts(); 
   }
 
   // Pet WDT
-  // petWDT();
+  petWDT();
 }
