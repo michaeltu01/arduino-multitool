@@ -1,3 +1,4 @@
+//Tests the changeCurrNoteupward function. Tests normal operation, that it wraps around at the end of the array, and checks edge cases where currNote index would be out of bounds.
 void test_changeCurrNoteUpward(){
   //normal operation
   currNote = 0;
@@ -22,6 +23,7 @@ void test_changeCurrNoteUpward(){
   Serial.println("changeCurrNoteUpward tests passed!");
 }
 
+//Tests the changeCurrNoteDownward function. Tests normal operation, that it wraps around at the beginning of the array, and checks edge cases where currNote index would be out of bounds.
 void test_changeCurrNoteDownward(){
   //normal operation
   currNote = 25;
@@ -46,6 +48,7 @@ void test_changeCurrNoteDownward(){
   Serial.println("changeCurrNoteDownward tests passed!");
 }
 
+//Tests the changeBPMUpward method. Tests normal operation, that it stops at the max BPM, and checks edge cases where the bpm is out of bounds. 
 void test_changeBPMUpward(){
   //normal operation
   bpm = 60;
@@ -69,6 +72,7 @@ void test_changeBPMUpward(){
   Serial.println("changeBPMUpward tests passed!");
 }
 
+//Tests the changeBPMDownward method. Tests normal operation, that it stops at the min BPM, and checks edge cases where the bpm is out of bounds. 
 void test_changeBPMDownward(){
   //normal operation
   bpm = 60;
@@ -92,6 +96,7 @@ void test_changeBPMDownward(){
   Serial.println("changeBPMDownward tests passed!");
 }
 
+//Tests the changeCurrTunerNoteUpward method. Tests normal operation and ensures the array wraps around at the end. Tested both for Guitar and Violin modes. 
 void test_changeCurrTunerNoteUpward(){
   //normal operation, Guitar
   currInstrument = 0;
@@ -104,12 +109,6 @@ void test_changeCurrTunerNoteUpward(){
   changeCurrTunerNoteUpward();
   assert(currTunerNote == 0);
 
-  // //case where somehow currNote index gets incremented above max limit
-  // currTunerNote = 6;
-  // changeCurrNoteUpward();
-  // Serial.println(currTunerNote);
-  // assert(currTunerNote == 0);
-
   //normal operation, Violin
   currInstrument = 1;
   currTunerNote = 0;
@@ -121,14 +120,10 @@ void test_changeCurrTunerNoteUpward(){
   changeCurrTunerNoteUpward();
   assert(currTunerNote == 0);
 
-  // //case where somehow currNote index gets incremented above max limit
-  // currTunerNote = 4;
-  // changeCurrNoteUpward();
-  // assert(currTunerNote == 0);
-
   Serial.println("changeCurrTunerNoteUpward tests passed!");
 }
 
+//Tests the changeCurrTunerNoteDownward method. Tests normal operation and ensures the array wraps around at the beginning. Tested both for Guitar and Violin modes. 
 void test_changeCurrTunerNoteDownward(){
   //normal operation, Guitar
   currInstrument = 0;
@@ -141,11 +136,6 @@ void test_changeCurrTunerNoteDownward(){
   changeCurrTunerNoteDownward();
   assert(currNote == 5);
 
-  //case where somehow currNote index gets incremented blow min limit
-  // currNote = -1;
-  // changeCurrNoteDownward();
-  // assert(currNote == 5);
-
   //normal operation, Violin
   currInstrument = 1;
   currNote = 3;
@@ -157,14 +147,10 @@ void test_changeCurrTunerNoteDownward(){
   changeCurrTunerNoteDownward();
   assert(currNote == 3);
 
-  //case where somehow currNote index gets incremented above max limit
-  // currNote = -1;
-  // changeCurrNoteDownward();
-  // assert(currNote == 3);
-
   Serial.println("changeCurrTunerNoteDownward tests passed!");
 }
 
+//Tests the changeCurrInstrumentUpward method. Tests normal operation and that the instrument index wraps around at the end.
 void test_changeCurrInstrumentUpward(){
   //normal operation
   currInstrument = 0;
@@ -179,6 +165,7 @@ void test_changeCurrInstrumentUpward(){
   Serial.println("changeCurrInstrumentUpward tests passed!");
 }
 
+//Tests the changeCurrInstrumentDownward method. Tests normal operation and that the instrument index wraps around at the beginning.
 void test_changeCurrInstrumentDownward(){
   //normal operation
   currInstrument = 1;
@@ -193,6 +180,7 @@ void test_changeCurrInstrumentDownward(){
   Serial.println("changeCurrInstrumentDownward tests passed!");
 }
 
+//Tests the onOffButtonISR method. This method should change the onOffButtonPressed variable to true. 
 void test_onOffButtonISR(){
   onOffButtonPressed = false;
   onOffButtonISR();
@@ -201,6 +189,7 @@ void test_onOffButtonISR(){
   Serial.println("onOffButtonISR test passed!");
 }
 
+//Tests the toolChangeButtonISR method. This method should change the toolChangeButtonPressed variable to true. 
 void test_toolChangeButtonISR(){
   toolChangeButtonPressed = false;
   toolChangeButtonISR();
