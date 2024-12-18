@@ -1,4 +1,5 @@
-/* Function that takes in a fsm_state enum and prints a more informative and accurate message about the state it is affiliated with
+/* Function that takes in a fsm_state enum and prints a more informative and 
+  accurate message about the state it is affiliated with
 * Input: fsm state that you want to print
 * Need this because enums don't print a string
 */
@@ -135,10 +136,17 @@ void test_fsm() { //COMMENT OUT fsm() in loop in arduino_multitool
 
 /* 
 * Helper method that updates all global variables to desired starting state values
-* Input: current state, current note, tuner note, current instrument, bpm, bool for if tool button is pressed, bool for if on/off button is pressed
+* Input: current state, current note, tuner note, current instrument, bpm, bool for if 
+tool button is pressed, bool for if on/off button is pressed
 * Output: updates all respective global variables to the input values
 */
-void updateGlobalVariablesForTesting(fsm_state test_currState, int test_currNote, int test_currTunerNote, int test_currInstrument, int test_bpm, bool test_toolButtonPressed, bool test_onOffButtonPressed) {
+void updateGlobalVariablesForTesting(
+    fsm_state test_currState, 
+    int test_currNote, int test_currTunerNote, 
+    int test_currInstrument, 
+    int test_bpm, 
+    bool test_toolButtonPressed, 
+    bool test_onOffButtonPressed) {
   currState = test_currState;
   currNote = test_currNote;
   currTunerNote = test_currTunerNote;
@@ -150,11 +158,23 @@ void updateGlobalVariablesForTesting(fsm_state test_currState, int test_currNote
 }
 
 /* 
-* Helper method that checks if all global variables are as expected after the fsm function is called
-* Input: current state, current note, tuner note, current instrument, bpm, bool for if tool button is pressed, bool for if on/off button is pressed
-* Output: checks/asserts if the fsm state transition updated the state and variables as expected. If not, the function prints informatively
+* Helper method that checks if all global variables 
+  are as expected after the fsm function is called
+* Input: current state, current note, tuner note, 
+  current instrument, bpm, bool for if tool button 
+  is pressed, bool for if on/off button is pressed
+* Output: checks/asserts if the fsm state transition 
+  updated the state and variables as expected. If 
+  not, the function prints informatively
 */
-void checkGlobalVariablesForTesting(fsm_state test_currState, int test_currNote, int test_currTunerNote, int test_currInstrument, int test_bpm, bool test_toolButtonPressed, bool test_onOffButtonPressed) {
+void checkGlobalVariablesForTesting(
+    fsm_state test_currState, 
+    int test_currNote, 
+    int test_currTunerNote, 
+    int test_currInstrument, 
+    int test_bpm, 
+    bool test_toolButtonPressed, 
+    bool test_onOffButtonPressed) {
   
   // Check currState
   if (currState != test_currState) {

@@ -41,10 +41,10 @@ int currInstrument = 0; //index of the instrument in array
 int lengthofNoteArray = 8;
 int lengthofInstrumentArray = 2;
 
-
+/*
+  Function that runs on start-up: put all initialization code here
+*/
 void setup() {
-  // put your setup code here, to run once:
-  
   initializeLCD();
 
   notePlayerSetup();
@@ -63,12 +63,14 @@ void setup() {
   // Initialize WDT
   initWDT();
   petWDT();
-  test_fsm();
-  all_tests();
+
+  // test_fsm();
+  // all_tests();
 }
 
+/*
+  Function that runs repeatedly after start-up is done
+*/
 void loop() {
-
-  // put your main code here, to run repeatedly:
-  // fsm();
+  fsm();
 }
